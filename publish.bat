@@ -9,8 +9,10 @@ git remote get-url origin >nul 2>&1 || git remote add origin https://github.com/
 git add -A
 git diff --cached --quiet || git commit -q -F publish-msg.txt
 git branch -M main
-git push -u origin main
-if errorlevel 1 (echo. & echo Upload failed. Send Claude a screenshot of this window. & pause & exit /b 1)
+git push -u origin main > publish-log.txt 2>&1
+set PUSHERR=%errorlevel%
+type publish-log.txt
+if not "%PUSHERR%"=="0" (echo. & echo Upload failed. Send Claude a screenshot of this window. & pause & exit /b 1)
 echo.
 echo Uploaded. The site goes live at https://abhaysharma2003.github.io/OnePager/ in about a minute.
 pause
