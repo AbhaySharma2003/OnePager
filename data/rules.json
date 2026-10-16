@@ -1,0 +1,81 @@
+{
+  "_source": "Consolidated from One Page Resume Creation Tool Kit C7 (SOPs + Resume Creation Checklist) and Sample Master CV Template guideline sheets. 'check' = how OnePager enforces it: 'render' (template guarantees it), 'auto' (validator checks it), 'ai' (generation prompt enforces it, validator flags), 'user' (student must confirm).",
+  "presentation": [
+    {"id": "font_size", "rule": "Use font size 9 throughout the CV", "check": "render"},
+    {"id": "font_style", "rule": "Use Calibri font only", "check": "render"},
+    {"id": "headings_bold", "rule": "All headings and sub-headings must be bold", "check": "render"},
+    {"id": "hyperlinks", "rule": "Email ID and LinkedIn (full URL) must be clickable blue hyperlinks; add portfolio link (full URL, hyperlinked) if applicable", "check": "render"},
+    {"id": "alignment", "rule": "Headings on the left, left-aligned; dates and locations in the right column, left-aligned", "check": "render"},
+    {"id": "gridlines", "rule": "Use gridlines/tables for layout stability (strict)", "check": "render"},
+    {"id": "capitalization", "rule": "Name in CAPS, bold, black. Educational institutions and company names all in the same CAPS format", "check": "auto"},
+    {"id": "subskill_format", "rule": "Underline sub-skill headings inside experience/internships; italicise company descriptions/roles in brackets on one line next to the main header", "check": "render"},
+    {"id": "file_format", "rule": "Submit only in PDF format", "check": "render"},
+    {"id": "one_line_bullets", "rule": "Bullet points should ideally fill one full line (no spill-over to a second line, no half-empty lines)", "check": "auto"},
+    {"id": "italics", "rule": "Italics for Professional Summary and company descriptions", "check": "render"},
+    {"id": "separators", "rule": "Use bar marks ( | ) as separators, not full stops", "check": "auto"},
+    {"id": "proofreading", "rule": "No grammar or spelling mistakes", "check": "ai"},
+    {"id": "one_page", "rule": "Whole resume must fit on exactly one A4 page", "check": "auto"}
+  ],
+  "sections": {
+    "header": [
+      {"id": "header_fields", "rule": "Name, phone number, email ID and LinkedIn profile (full URL); portfolio full URL if any", "check": "auto"},
+      {"id": "header_position", "rule": "At the top of the resume, centred", "check": "render"}
+    ],
+    "professional_summary": [
+      {"id": "summary_length", "rule": "50-60 words; 3-4 lines max", "check": "auto", "min_words": 50, "max_words": 60},
+      {"id": "summary_start", "rule": "Do not start with 'I'; start with an action verb; focus on measurable achievements and outcomes", "check": "auto"},
+      {"id": "summary_spikes", "rule": "Highlight spikes: leadership, awards, entrepreneurship, sports or expertise", "check": "ai"},
+      {"id": "summary_branding", "rule": "Create a clear professional identity aligned to the target domain", "check": "ai"},
+      {"id": "summary_tone", "rule": "Concise, recruiter-friendly language", "check": "ai"}
+    ],
+    "education": [
+      {"id": "edu_order", "rule": "Reverse chronological order", "check": "auto"},
+      {"id": "edu_mu_name", "rule": "Institution names in CAPS, spelled exactly as the institution writes its name", "check": "auto"},
+      {"id": "edu_program", "rule": "Programme written in full form (e.g. 'MBA in Finance'), not as a bare abbreviation", "check": "auto"},
+      {"id": "edu_verification", "rule": "Degree, institution and graduation year clearly stated", "check": "auto"},
+      {"id": "edu_format", "rule": "Bar marks instead of full stops; write CBSE Class X & XII in Roman numerals", "check": "auto"},
+      {"id": "edu_score", "rule": "Mention CGPA/percentage only if above 80% (8.0/10)", "check": "auto"},
+      {"id": "edu_timeline", "rule": "Year format '2026-Present', latest first", "check": "auto"}
+    ],
+    "experience": [
+      {"id": "exp_verification", "rule": "Clearly mention title/designation, company, duration", "check": "auto"},
+      {"id": "exp_rac", "rule": "Bullets follow Result-Action-Context (RAC): lead with the result, then the action, then the context", "check": "ai"},
+      {"id": "exp_quant", "rule": "Include measurable outcomes and impact (numbers, %, ₹, scale)", "check": "auto"},
+      {"id": "exp_relevance", "rule": "Remove experiences irrelevant to the target domain", "check": "ai"},
+      {"id": "exp_clarity", "rule": "Bullets easy to understand and outcome-oriented", "check": "ai"},
+      {"id": "exp_timeline", "rule": "Date range in month'yy format, e.g. Apr'24-Jul'24", "check": "auto"},
+      {"id": "exp_subskills", "rule": "Group bullets under underlined bold-italic sub-skill headings (e.g. 'Growth Marketing & Revenue Impact') when a role has 4+ bullets", "check": "ai"}
+    ],
+    "projects": [
+      {"id": "proj_context", "rule": "Project name, date and role", "check": "auto"},
+      {"id": "proj_contribution", "rule": "Clearly explain actions taken", "check": "ai"},
+      {"id": "proj_outcome", "rule": "Mention measurable results and impact", "check": "auto"},
+      {"id": "proj_relevance", "rule": "Focus on research, live projects, freelance work or college contributions", "check": "ai"},
+      {"id": "proj_timeline", "rule": "Date range in month'yy format", "check": "auto"}
+    ],
+    "extracurricular_leadership_awards_certifications": [
+      {"id": "lead_ownership", "rule": "Mention positions of responsibility and ownership", "check": "ai"},
+      {"id": "lead_impact", "rule": "Include measurable achievements: footfall, revenue, sponsorship, participants, timeframe", "check": "auto"},
+      {"id": "cert_credible", "rule": "Only credible and relevant certifications", "check": "ai"},
+      {"id": "rankings", "rule": "Add competition scale or ranking context (e.g. 1st of 150, national level)", "check": "ai"},
+      {"id": "eca_timeline", "rule": "Dates optional, format Jul'24", "check": "auto"}
+    ],
+    "skills": [
+      {"id": "skills_relevance", "rule": "Only relevant business and technical skills", "check": "ai"},
+      {"id": "skills_verified", "rule": "Every skill must be backed by experience/projects in the resume", "check": "ai"},
+      {"id": "skills_domain", "rule": "Align skills with the target role/domain keyword list", "check": "auto"},
+      {"id": "skills_buckets", "rule": "Group skills logically into buckets (Business Skills | Technical Skills)", "check": "render"},
+      {"id": "skills_concise", "rule": "Concise and scannable", "check": "auto"}
+    ]
+  },
+  "section_order": ["Professional Summary", "Education", "Experience", "Internships", "Projects", "Certifications", "Achievements", "Leadership", "Extra-curricular", "Social Impact", "Skills"],
+  "master_cv_guidelines": {
+    "academic_achievements": "Cover: position out of total (top 10%ile, 10/350), year, quantified scholarship/prize money/funds. Types: scholarships (purpose, amount, out of how many, awarded by, when), institute/department rank & medals, olympiads (conducted by, subject, state/national/international rank, year), competitive exams (CAT/GMAT/GRE/JEE/XAT score, admits, year), professional courses (CFA, CS, Six Sigma, NCFM), job/PPO offers, recommendations, academic projects (papers, dissertations, academic internships), online courses (score, sponsorship).",
+    "certifications": "Full name, issuing organisation, year; level/tier (e.g. CFA Level 1, Six Sigma Green Belt); score/percentile/distinction; selection criteria or rank; sponsorship; projects done, tools learned, real-world application.",
+    "work_experience": "Position | Company | Tenure. Achievements covering: impact & business results; core responsibilities & skill development; innovation & process enhancements; stakeholder management & collaboration; professional recognition & endorsements. Record everything: trainings, ideas proposed, projects, tools, people mentored.",
+    "internships": "Position | Company | Tenure. Recognition & key takeaways; key contributions & learnings; process improvements/new ideas; client/team exposure; LOR/LOA from seniors.",
+    "b_plan": "B-plan competition position/award and outcome; venture idea, seed funding, outcome; national-level case competitions.",
+    "positions_of_responsibility": "Heads: student council, cultural/tech/management fest, NGO, clubs/committees (literary, theatre, E-cell, NEN, sports), team/house captain, class rep, workplace leadership (thread lead, CSR). Roles: treasurer, chairperson, counsellor, editor, core member, secretary, president, VP, coordinator, head, volunteer. Quantify footfall, revenue, sponsorship (partner + amount), timeframe; events initiated; workshops; corporate talks; NGO outcome.",
+    "extra_curricular": "Categories: social contribution (volunteering, crowdfunding, NGO); sports (rank, out of how many, state/national/international level, sport); public speaking (rank, participants, level, debate/JAM/extempore); creative writing/art (rank or publication, submissions, activity); cultural (rank, level, activity); miscellaneous (biking, martial arts, painting, yoga, trekking, travel, quiz)."
+  }
+}

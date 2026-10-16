@@ -1,0 +1,66 @@
+/* OnePager resume sheet — replicates the classic one-page business-school template.
+   Geometry measured from the official template PDF (A4, 595x842pt):
+   label column 58pt | content 460pt | dates 61pt, 1pt black grid, Calibri 9pt, line ~9.9pt. */
+
+@font-face { font-family: "OPCalibri"; src: local("Calibri"), url("fonts/Carlito-Regular.ttf") format("truetype"); font-weight: 400; font-style: normal; }
+@font-face { font-family: "OPCalibri"; src: local("Calibri Bold"), local("Calibri-Bold"), url("fonts/Carlito-Bold.ttf") format("truetype"); font-weight: 700; font-style: normal; }
+@font-face { font-family: "OPCalibri"; src: local("Calibri Italic"), local("Calibri-Italic"), url("fonts/Carlito-Italic.ttf") format("truetype"); font-weight: 400; font-style: italic; }
+@font-face { font-family: "OPCalibri"; src: local("Calibri Bold Italic"), local("Calibri-BoldItalic"), url("fonts/Carlito-BoldItalic.ttf") format("truetype"); font-weight: 700; font-style: italic; }
+
+.op-page {
+  --op-line: 9.9pt;
+  box-sizing: border-box;
+  width: 595.3pt;
+  height: 841.9pt;
+  padding: 16.5pt 1.8pt 0 14.5pt;
+  background: #fff;
+  color: #000;
+  font-family: "OPCalibri", Calibri, Carlito, sans-serif;
+  font-size: 9pt;
+  line-height: var(--op-line);
+  overflow: hidden;
+  position: relative;
+  -webkit-font-smoothing: antialiased;
+  font-kerning: normal;
+}
+.op-page * { box-sizing: border-box; }
+.op-page b, .op-page strong { font-weight: 700; }
+.op-page a { color: #1155cc; text-decoration: underline; }
+
+.op-head { text-align: center; padding-bottom: 10.5pt; margin-left: -12.7pt; }
+.op-name { font-weight: 700; text-transform: uppercase; }
+
+.op-table { width: 579pt; border-collapse: collapse; table-layout: fixed; }
+.op-table col.c1 { width: 58pt; }
+.op-table col.c2 { width: 460pt; }
+.op-table col.c3 { width: 61pt; }
+.op-table td { border: 1pt solid #000; vertical-align: top; padding: 2.4pt 1.4pt 2.9pt 1.6pt; }
+.op-label { font-weight: 700; }
+.op-label span { background: var(--op-label-bg, #ffff00); }
+.op-page.no-highlight .op-label span { background: none; }
+.op-date { white-space: nowrap; overflow: hidden; }
+.op-date .loc { font-weight: 700; display: block; white-space: normal; }
+
+.op-summary { font-style: italic; }
+.op-org { font-weight: 700; }
+.op-org .desc { font-weight: 400; font-style: italic; }
+.op-role { font-weight: 700; }
+.op-sub { font-weight: 700; font-style: italic; text-decoration: underline; }
+.op-line { white-space: normal; }
+.op-bullet { display: block; }
+.op-bullet::before { content: "\25CF"; font-family: Arial, "Liberation Sans", sans-serif; font-size: 8.4pt; line-height: 0; padding-right: 1.6pt; }
+
+/* Editor-only fit warnings (hidden in print) */
+.op-page .op-warn-overflow { outline: 1.5pt solid #e11d48; outline-offset: -1pt; background: rgba(225,29,72,.07); }
+.op-page .op-warn-short { background: rgba(245,158,11,.12); }
+.op-overflow-line { position: absolute; left: 0; right: 0; border-top: 1.5pt dashed #e11d48; pointer-events: none; }
+
+@media print {
+  @page { size: A4; margin: 0; }
+  html, body { margin: 0 !important; padding: 0 !important; background: #fff !important; }
+  body > *:not(.op-print-root) { display: none !important; }
+  .op-print-root { display: block !important; }
+  .op-page { box-shadow: none !important; margin: 0 !important; }
+  .op-page .op-warn-overflow, .op-page .op-warn-short { outline: none; background: none; }
+  .op-overflow-line { display: none; }
+}

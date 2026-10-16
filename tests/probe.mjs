@@ -1,0 +1,11 @@
+import { chromium } from 'playwright';
+import http from 'node:http'; import fs from 'node:fs'; import path from 'node:path';
+const root = path.resolve('web');
+const types = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.ttf': 'font/ttf' };
+const srv = http.createServer((q, s) => { const p = path.join(root, decodeURIComponent(q.url.split('?')[0])); if (!fs.existsSync(p) || fs.statSync(p).isDirectory()) { s.writeHead(404); return s.end(); } s.writeHead(200, { 'content-type': types[path.extname(p)] || 'application/octet-stream' }); fs.createReadStream(p).pipe(s); }).listen(0);
+const b = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium-1194/chrome-linux/chrome' });
+const pg = await (await b.newContext({ viewport: { width: 390, height: 844 } })).newPage();
+await pg.route('https://fonts.googleapis.com/**', (r) => r.fulfill({ contentType: 'text/css', body: fs.readFileSync('/tmp/geist.css','utf8') }));
+await pg.goto(`http://localhost:${srv.address().port}/${process.argv[2]}`); await pg.waitForTimeout(800);
+console.log(await pg.evaluate(new Function(process.argv[3])));
+await b.close(); srv.close();

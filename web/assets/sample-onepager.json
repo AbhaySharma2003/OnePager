@@ -1,0 +1,220 @@
+{
+ "header": {
+  "name": "Riya Kapoor",
+  "email": "riya.kapoor@example.com",
+  "phone": "+91 98XXX XXX21",
+  "linkedin": "https://www.linkedin.com/in/example"
+ },
+ "summary": "Product-minded analyst with 2 years in B2B logistics SaaS, turning operations data into decisions. Cut dispatch planning time by **35%** and shipped a pricing dashboard used by **120+** account managers. Now deepening product strategy skills in an MBA, targeting Associate Product Manager roles.",
+ "education": [
+  {
+   "institution": "NORTHFIELD SCHOOL OF BUSINESS",
+   "program": "MBA in Product & Technology Management",
+   "details": [
+    "Product Club core member | Dean’s list, Term 1"
+   ],
+   "dates": "2025-Present",
+   "location": "Gurugram"
+  },
+  {
+   "institution": "DELHI TECHNOLOGICAL UNIVERSITY",
+   "program": "B.Tech in Information Technology | **CGPA: 8.7/10**",
+   "details": [],
+   "dates": "2019-2023",
+   "location": "Delhi"
+  },
+  {
+   "institution": "SPRINGDALES SCHOOL",
+   "program": "CBSE Class XII | **94.2%**",
+   "details": [],
+   "dates": "2019",
+   "location": "Delhi"
+  }
+ ],
+ "experience": [
+  {
+   "org": "KESTREL FREIGHT",
+   "org_description": "Series B logistics SaaS",
+   "role": "Business Analyst, Product & Pricing",
+   "dates": "Jul’23-May’25",
+   "location": "Bengaluru",
+   "groups": [
+    {
+     "heading": "Product Analytics",
+     "bullets": [
+      "Cut dispatch planning time by **35%** by building a lane-level demand model in Python for 14 hubs",
+      "Raised trial-to-paid conversion by **9 pts** by mapping onboarding drop-offs and redesigning 3 steps",
+      "Shipped a pricing dashboard in **Power BI** used weekly by **120+** account managers across 4 regions"
+     ]
+    },
+    {
+     "heading": "Pricing & Stakeholders",
+     "bullets": [
+      "Recovered **₹1.8 Cr** in annual revenue by flagging under-priced contracts through margin analysis",
+      "Led a 5-member squad to launch a fuel-surcharge calculator adopted by **60%** of enterprise clients",
+      "Negotiated revised SLAs with 8 enterprise shippers, cutting monthly penalty payouts by **₹22 lakh**",
+      "Ran weekly pricing reviews with sales and finance heads, closing **96%** of discount requests in 48 hours"
+     ]
+    }
+   ]
+  },
+  {
+   "org": "BLUEBIRD ANALYTICS",
+   "org_description": "Retail analytics consultancy",
+   "role": "Analyst Intern to Associate Analyst",
+   "dates": "Jan’23-Jun’23",
+   "location": "Gurugram",
+   "groups": [
+    {
+     "heading": "",
+     "bullets": [
+      "Built a store-level sales forecast in **SQL** and Python for a 220-store apparel chain, cutting stock-outs by **18%**",
+      "Automated weekly category reviews for 3 retail clients, saving the team **12 hours** of manual reporting a week",
+      "Presented markdown recommendations to a client CXO, adopted for **40%** of the winter season assortment",
+      "Cleaned and merged 3 years of POS data across 9 systems into one model used for every client review"
+     ]
+    }
+   ]
+  }
+ ],
+ "internships": [
+  {
+   "org": "NORTHWIND RETAIL",
+   "role": "Product Intern",
+   "dates": "May’22-Jul’22",
+   "location": "Gurugram",
+   "groups": [
+    {
+     "heading": "",
+     "bullets": [
+      "Lifted checkout completion by **6%** by A/B testing a one-page address flow on 40K weekly sessions",
+      "Wrote 12 PRDs and user stories for the loyalty app, translating 30 customer interviews into features",
+      "Sized a **₹40 Cr** private-label opportunity from basket data, now part of the FY24 category roadmap",
+      "Presented a loyalty tier redesign to the CMO, rolled out to **1.2M** members in the next quarter"
+     ]
+    }
+   ]
+  }
+ ],
+ "projects": [
+  {
+   "org": "LIVE PROJECT: CAMPUS COMMERCE",
+   "role": "Product Lead",
+   "dates": "Jan’26-Mar’26",
+   "location": "",
+   "groups": [
+    {
+     "heading": "",
+     "bullets": [
+      "Grew weekly active buyers to **1,100** by launching a peer marketplace MVP with a team of 4 in 6 weeks",
+      "Ran 25 buyer interviews and 4 pricing experiments, settling on a 5% seller fee with **82%** retention"
+     ]
+    }
+   ]
+  },
+  {
+   "org": "CAPSTONE: QUICK-COMMERCE PRICING",
+   "role": "Team Lead",
+   "dates": "Aug’22-Dec’22",
+   "location": "",
+   "groups": [
+    {
+     "heading": "",
+     "bullets": [
+      "Modelled dark-store unit economics for 3 cities and proposed a delivery-fee ladder lifting margin by **4 pts**"
+     ]
+    }
+   ]
+  }
+ ],
+ "certifications": [
+  {
+   "name": "Product Analytics Certification",
+   "issuer": "Pendo",
+   "dates": "2024"
+  },
+  {
+   "name": "Google Data Analytics",
+   "issuer": "Coursera",
+   "dates": "2023"
+  },
+  {
+   "name": "SQL for Data Science",
+   "issuer": "UC Davis, Coursera",
+   "dates": "2022"
+  }
+ ],
+ "achievements": [
+  "Ranked **2nd of 180** teams at IIM Ahmedabad’s Product Case Challenge for a B2B pricing teardown",
+  "Secured **99.1 percentile** in CAT 2024 and a merit scholarship of **₹3 lakh**, awarded to the top 5% of the batch",
+  "Won the Dean’s Award for the best Term 1 consulting project out of **42** teams in the MBA cohort"
+ ],
+ "leadership": [
+  {
+   "org": "PRODUCT CLUB, NORTHFIELD SCHOOL OF BUSINESS",
+   "role": "Core Member",
+   "dates": "Aug’25-Present",
+   "location": "",
+   "groups": [
+    {
+     "heading": "",
+     "bullets": [
+      "Organised 6 product teardown sessions with founders and PMs, drawing **400+** attendees in one term",
+      "Raised **₹1.5 lakh** in sponsorship from 3 SaaS startups for the club’s first product hackathon"
+     ]
+    }
+   ]
+  },
+  {
+   "org": "DTU ENTREPRENEURSHIP CELL",
+   "role": "Head of Events",
+   "dates": "2021-2022",
+   "location": "",
+   "groups": [
+    {
+     "heading": "",
+     "bullets": [
+      "Led a 20-member team to run a 2-day startup summit with **2,500+** footfall and 30 founder speakers"
+     ]
+    }
+   ]
+  }
+ ],
+ "extracurricular": [
+  "State-level debate finalist, Delhi Youth Parliament (top 8 of 120 speakers) | Marathoner, 2 half-marathons",
+  "Captain, inter-college football team (3rd of 24 colleges, 2022) | Trained in Hindustani classical vocals"
+ ],
+ "social_impact": [
+  {
+   "org": "TEACH FOR INDIA FELLOWS NETWORK",
+   "role": "Volunteer",
+   "dates": "2021-2023",
+   "location": "",
+   "groups": [
+    {
+     "heading": "",
+     "bullets": [
+      "Taught weekend math to **35** Class VIII students in Delhi, lifting their average test score by **22%**",
+      "Built a free Google Sheets tracker for 6 partner schools to monitor attendance and test scores"
+     ]
+    }
+   ]
+  }
+ ],
+ "skills": {
+  "business": [
+   "Product strategy",
+   "Pricing",
+   "User research",
+   "A/B testing",
+   "Stakeholder management"
+  ],
+  "technical": [
+   "SQL",
+   "Python",
+   "Power BI",
+   "Mixpanel",
+   "Figma"
+  ]
+ }
+}

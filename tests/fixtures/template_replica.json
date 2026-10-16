@@ -1,0 +1,198 @@
+{
+ "header": {
+  "name": "John Doe",
+  "email": "john.doe@example.com",
+  "phone": "+91 9999999999",
+  "linkedin": "https://www.linkedin.com/in/john-doe/"
+ },
+ "summary": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, e eu, pretium quis, sem. Nulla consequat massa quis enim. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo.",
+ "education": [
+  {
+   "institution": "NORTHFIELD SCHOOL OF BUSINESS",
+   "program": "MBA in Product Management | Consectetuer adipiscing elit | **Aenean commodo** ligula eget dolor | Lorem ipsum dolor sit amet | **Consectetuer adipiscing elit** | Aenean commodo ligula eget dolor",
+   "dates": "2026-Present",
+   "location": "Location"
+  },
+  {
+   "institution": "LOREM IPSUM DOLOR",
+   "program": "Program Name | **CGPA**",
+   "details": [
+    "Lorem ipsum dolor sit amet, consectetuer adipiscing elit | **Aenean commodo** ligula eget dolor. Aenean massa | Cum sociis Lorem ipsum dolor sit amet | **Consectetuer adipiscing elit** | Aenean commodo ligula eget dolor. Aenean massa"
+   ],
+   "dates": "2019-2022",
+   "location": "Location"
+  },
+  {
+   "institution": "LOREM IPSUM DOLOR",
+   "program": "CBSE Commerce Class X | Class XII",
+   "details": [
+    "Lorem ipsum dolor sit amet | Consectetuer adipiscing elit | Aenean commodo ligula eget dolor | Aenean massa cum sociis"
+   ],
+   "dates": "2018-2019",
+   "location": "Location"
+  }
+ ],
+ "experience": [
+  {
+   "org": "XYZ",
+   "role": "Designation",
+   "dates": "Jul’22-Apr’24",
+   "location": "Location",
+   "groups": [
+    {
+     "heading": "Growth Marketing & Revenue Impact",
+     "bullets": [
+      "Lorem ipsum dolor sit amet, **consectetuer adipiscing elit,** aenean commodo ligula eget dolor aenean massa, cum sociis",
+      "Lorem ipsum dolor sit amet, **consectetuer adipiscing elit,** aenean commodo ligula eget dolor aenean massa, cum sociis",
+      "Lorem ipsum dolor sit amet, **consectetuer adipiscing elit,** aenean commodo ligula eget dolor aenean massa, cum sociis"
+     ]
+    },
+    {
+     "heading": "Campaigns, Brand & Experiential Marketing",
+     "bullets": [
+      "Lorem ipsum dolor sit amet, **consectetuer adipiscing elit,** aenean commodo ligula eget dolor aenean massa, cum sociis",
+      "Lorem ipsum dolor sit amet, **consectetuer adipiscing elit,** aenean commodo ligula eget dolor aenean massa, cum sociis",
+      "Lorem ipsum dolor sit amet, **consectetuer adipiscing elit,** aenean commodo ligula eget dolor aenean massa, cum sociis"
+     ]
+    }
+   ]
+  },
+  {
+   "org": "ABC Pvt. Ltd.",
+   "role": "Designation",
+   "dates": "Jul’21-Jul’22",
+   "location": "Location",
+   "groups": [
+    {
+     "heading": "Marketing Analytics, Systems & Team Enablement",
+     "bullets": [
+      "Lorem ipsum dolor sit amet, **consectetuer adipiscing elit,** aenean commodo ligula eget dolor aenean massa, cum sociis",
+      "Lorem ipsum dolor sit amet, **consectetuer adipiscing elit,** aenean commodo ligula eget dolor aenean massa, cum sociis",
+      "Lorem ipsum dolor sit amet, **consectetuer adipiscing elit,** aenean commodo ligula eget dolor aenean massa, cum sociis"
+     ]
+    },
+    {
+     "heading": "Campaigns, Brand & Experiential Marketing",
+     "bullets": [
+      "Lorem ipsum dolor sit amet, **consectetuer adipiscing elit,** aenean commodo ligula eget dolor aenean massa, cum sociis",
+      "Lorem ipsum dolor sit amet, **consectetuer adipiscing elit,** aenean commodo ligula eget dolor aenean massa, cum sociis",
+      "Lorem ipsum dolor sit amet, **consectetuer adipiscing elit,** aenean commodo ligula eget dolor aenean massa, cum sociis"
+     ]
+    }
+   ]
+  }
+ ],
+ "internships": [
+  {
+   "org": "XYZ",
+   "org_description": "Lorem ipsum dolor sit amet, consectetuer adipiscing",
+   "role": "Designation",
+   "dates": "May’24-Jan’25",
+   "location": "Location",
+   "groups": [
+    {
+     "bullets": [
+      "Lorem ipsum dolor sit amet, **consectetuer adipiscing elit,** aenean commodo ligula eget dolor aenean massa, cum sociis",
+      "Lorem ipsum dolor sit amet, **consectetuer adipiscing elit,** aenean commodo ligula eget dolor aenean massa, cum sociis",
+      "Lorem ipsum dolor sit amet, **consectetuer adipiscing elit,** aenean commodo ligula eget dolor aenean massa, cum sociis"
+     ]
+    }
+   ]
+  }
+ ],
+ "projects": [
+  {
+   "org": "XYZ",
+   "org_description": "Lorem ipsum dolor sit amet, consectetuer adipiscing",
+   "role": "Co-Founder",
+   "dates": "Jul’25-Present",
+   "groups": [
+    {
+     "bullets": [
+      "Lorem ipsum dolor sit amet, **consectetuer adipiscing elit,** aenean commodo ligula eget dolor aenean massa, cum sociis",
+      "Lorem ipsum dolor sit amet, **consectetuer adipiscing elit,** aenean commodo ligula eget dolor aenean massa, cum sociis"
+     ]
+    }
+   ]
+  },
+  {
+   "org": "XYZ",
+   "org_description": "Lorem ipsum dolor sit amet, consectetuer adipiscing",
+   "role": "Co-Founder",
+   "dates": "Nov’25-Dec’25",
+   "groups": [
+    {
+     "bullets": [
+      "Lorem ipsum dolor sit amet, **consectetuer adipiscing elit,** aenean commodo ligula eget dolor aenean massa, cum sociis",
+      "Lorem ipsum dolor sit amet, **consectetuer adipiscing elit,** aenean commodo ligula eget dolor aenean massa, cum sociis"
+     ]
+    }
+   ]
+  }
+ ],
+ "certifications": [
+  {
+   "name": "Course Name",
+   "issuer": "Issuing Organisation",
+   "dates": "Jul’25",
+   "bullets": [
+    "Lorem ipsum dolor sit amet, **consectetuer adipiscing elit,** aenean commodo ligula eget dolor aenean massa, cum sociis",
+    "Lorem ipsum dolor sit amet, **consectetuer adipiscing elit,** aenean commodo ligula eget dolor aenean massa, cum sociis"
+   ]
+  }
+ ],
+ "achievements": [
+  "Lorem ipsum dolor sit amet, **consectetuer adipiscing elit,** aenean commodo ligula eget dolor aenean massa, cum sociis",
+  "Lorem ipsum dolor sit amet, **consectetuer adipiscing elit,** aenean commodo ligula eget dolor aenean massa, cum sociis",
+  "Lorem ipsum dolor sit amet, **consectetuer adipiscing elit,** aenean commodo ligula eget dolor aenean massa, cum sociis"
+ ],
+ "leadership": [
+  {
+   "org": "Society / Organisation Name",
+   "role": "Position",
+   "groups": [
+    {
+     "bullets": [
+      "Lorem ipsum dolor sit amet, **consectetuer adipiscing elit,** aenean commodo ligula eget dolor aenean massa, cum sociis",
+      "Lorem ipsum dolor sit amet, **consectetuer adipiscing elit,** aenean commodo ligula eget dolor aenean massa, cum sociis"
+     ]
+    }
+   ]
+  }
+ ],
+ "extracurricular": [
+  "Lorem ipsum dolor sit amet, **consectetuer adipiscing elit,** aenean commodo ligula eget dolor aenean massa, cum sociis",
+  "Lorem ipsum dolor sit amet, **consectetuer adipiscing elit,** aenean commodo ligula eget dolor aenean massa, cum sociis",
+  "Lorem ipsum dolor sit amet, **consectetuer adipiscing elit,** aenean commodo ligula eget dolor aenean massa, cum sociis",
+  "Lorem ipsum dolor sit amet, **consectetuer adipiscing elit,** aenean commodo ligula eget dolor aenean massa, cum sociis"
+ ],
+ "social_impact": [
+  {
+   "org": "XYZ",
+   "dates": "Aug’24 - Sep’24",
+   "groups": [
+    {
+     "bullets": [
+      "Lorem ipsum dolor sit amet, **consectetuer adipiscing elit,** aenean commodo ligula eget dolor aenean massa, cum sociis",
+      "Lorem ipsum dolor sit amet, **consectetuer adipiscing elit,** aenean commodo ligula eget dolor aenean massa, cum sociis",
+      "Lorem ipsum dolor sit amet, **consectetuer adipiscing elit,** aenean commodo ligula eget dolor aenean massa, cum sociis"
+     ]
+    }
+   ]
+  }
+ ],
+ "skills": {
+  "business": [
+   "Business Skills",
+   "Business Skills",
+   "Business Skills",
+   "Business Skills"
+  ],
+  "technical": [
+   "Technical Skills",
+   "Technical Skills",
+   "Technical Skills",
+   "Technical Skills"
+  ]
+ }
+}

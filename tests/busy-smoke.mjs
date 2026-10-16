@@ -1,0 +1,26 @@
+// When the AI is busy during fitting, the one-pager must still show with its checks and a clear message.
+import { chromium } from 'playwright';
+import http from 'node:http'; import fs from 'node:fs'; import path from 'node:path';
+const root = path.resolve('web');
+const types = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.ttf': 'font/ttf' };
+const srv = http.createServer((q, s) => { const p = path.join(root, decodeURIComponent(q.url.split('?')[0].split('#')[0])); if (!fs.existsSync(p) || fs.statSync(p).isDirectory()) { s.writeHead(404); return s.end(); } s.writeHead(200, { 'content-type': types[path.extname(p)] || 'application/octet-stream' }); fs.createReadStream(p).pipe(s); }).listen(0);
+const port = srv.address().port;
+const resume = JSON.parse(fs.readFileSync('tests/fixtures/template_replica.json')); delete resume.header;
+resume.experience[0].groups[0].bullets[0] += ' and this extra clause makes the bullet spill onto a second printed line for sure';
+const master = { personal: { name: 'John Doe', email: 'john.doe@example.com', phone: '+91 9999999999', linkedin: 'https://www.linkedin.com/in/john-doe/' }, education: [{ degree: 'MBA', institute: "Northfield School of Business" }] };
+const b = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium-1194/chrome-linux/chrome' });
+const pg = await (await b.newContext({ viewport: { width: 1360, height: 900 } })).newPage();
+const errors = []; pg.on('pageerror', (e) => errors.push(e.message));
+await pg.route('https://cdn.jsdelivr.net/npm/@supabase/**', (r) => r.fulfill({ contentType: 'text/javascript', body: fs.readFileSync('tests/stubs/supabase-stub.js', 'utf8') }));
+await pg.route('https://fonts.googleapis.com/**', (r) => r.fulfill({ contentType: 'text/css', body: '' }));
+await pg.addInitScript(([f]) => { window.__FIXTURES__ = f; window.__STUB__ = { refineBusy: true }; }, [{ extract: { master }, generate: { resume, flags: [] }, refine: { resume } }]);
+await pg.goto(`http://localhost:${port}/app.html`);
+await pg.waitForSelector('#v-start:not([hidden])');
+await pg.setInputFiles('#file-cv', { name: 'cv.txt', mimeType: 'text/plain', buffer: Buffer.from('John Doe CV text '.repeat(20)) });
+await pg.waitForSelector('#v-resume:not([hidden])', { timeout: 20000 });
+await pg.waitForFunction(() => document.querySelector('#busy').hidden, null, { timeout: 30000 });
+await pg.waitForTimeout(300);
+const out = await pg.evaluate(() => ({ fitCard: document.querySelector('#fit-card').innerText.slice(0, 120), checks: document.querySelector('#tab-checks').innerText.slice(0, 80), toast: [...document.querySelectorAll('.toast')].map((t) => t.innerText) }));
+await pg.screenshot({ path: 'tests/out/busy.png' });
+console.log(JSON.stringify({ out, errors }, null, 1));
+await b.close(); srv.close();

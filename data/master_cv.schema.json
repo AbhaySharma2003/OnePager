@@ -1,0 +1,437 @@
+{
+  "_doc": "Master CV: everything a student has done, mirroring the 'Master CV template' sheet. Filled by the student via the form, or extracted by AI from an uploaded old CV. Nothing here is shortened; the one-pager is generated FROM this. Gemini-compatible schema (OpenAPI subset).",
+  "type": "object",
+  "properties": {
+    "personal": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "gender": {
+          "type": "string"
+        },
+        "age": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "linkedin": {
+          "type": "string",
+          "description": "Full URL"
+        },
+        "portfolio": {
+          "type": "string",
+          "description": "Full URL, optional"
+        },
+        "location": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name"
+      ]
+    },
+    "education": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "start_year": {
+            "type": "string"
+          },
+          "end_year": {
+            "type": "string",
+            "description": "Year or 'Present'"
+          },
+          "degree": {
+            "type": "string",
+            "description": "e.g. MBA in Finance, B.Tech (ECE), Class XII"
+          },
+          "specialisation": {
+            "type": "string"
+          },
+          "institute": {
+            "type": "string"
+          },
+          "board_university": {
+            "type": "string"
+          },
+          "location": {
+            "type": "string"
+          },
+          "score": {
+            "type": "string",
+            "description": "As written, e.g. 8.63/10 or 92.4%"
+          },
+          "rank": {
+            "type": "string"
+          },
+          "highlights": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "degree",
+          "institute"
+        ]
+      }
+    },
+    "academic_achievements": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string"
+          },
+          "year": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "text"
+        ]
+      }
+    },
+    "certifications": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "issuer": {
+            "type": "string"
+          },
+          "field": {
+            "type": "string"
+          },
+          "year": {
+            "type": "string"
+          },
+          "month": {
+            "type": "string"
+          },
+          "score": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "description": "Completed or Ongoing"
+          },
+          "details": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "name"
+        ]
+      }
+    },
+    "academic_projects": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "subject": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "outcome": {
+            "type": "string"
+          },
+          "start": {
+            "type": "string"
+          },
+          "end": {
+            "type": "string"
+          },
+          "year": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "title"
+        ]
+      }
+    },
+    "internships": {
+      "$ref": "#/definitions/role"
+    },
+    "work_experience": {
+      "$ref": "#/definitions/role"
+    },
+    "positions_of_responsibility": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "position": {
+            "type": "string"
+          },
+          "organisation": {
+            "type": "string"
+          },
+          "responsibilities": {
+            "type": "string"
+          },
+          "achievements": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "start": {
+            "type": "string"
+          },
+          "end": {
+            "type": "string"
+          },
+          "year": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "position"
+        ]
+      }
+    },
+    "freelance_projects": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name_role": {
+            "type": "string"
+          },
+          "client": {
+            "type": "string"
+          },
+          "contributions": {
+            "type": "string"
+          },
+          "impact": {
+            "type": "string"
+          },
+          "start": {
+            "type": "string"
+          },
+          "end": {
+            "type": "string"
+          },
+          "year": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name_role"
+        ]
+      }
+    },
+    "research": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "focus_area": {
+            "type": "string"
+          },
+          "methodology": {
+            "type": "string"
+          },
+          "findings": {
+            "type": "string"
+          },
+          "institution": {
+            "type": "string"
+          },
+          "year": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "title"
+        ]
+      }
+    },
+    "b_plan_competitions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "competition": {
+            "type": "string"
+          },
+          "conducted_by": {
+            "type": "string"
+          },
+          "position": {
+            "type": "string"
+          },
+          "outcome": {
+            "type": "string"
+          },
+          "funding": {
+            "type": "string"
+          },
+          "year": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "competition"
+        ]
+      }
+    },
+    "extra_curricular": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "activity": {
+            "type": "string"
+          },
+          "category": {
+            "type": "string",
+            "description": "Social contribution | Sports | Public speaking | Creative | Cultural | Miscellaneous"
+          },
+          "achievements": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "year": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "activity"
+        ]
+      }
+    },
+    "skills": {
+      "type": "object",
+      "properties": {
+        "business": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "technical": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "interests": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "definitions": {
+    "role": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "designation": {
+            "type": "string"
+          },
+          "company": {
+            "type": "string"
+          },
+          "company_description": {
+            "type": "string",
+            "description": "One short phrase, e.g. 'Series B fintech, 2M users'"
+          },
+          "location": {
+            "type": "string"
+          },
+          "employment_type": {
+            "type": "string",
+            "description": "Full time | Part time | Internship"
+          },
+          "start": {
+            "type": "string",
+            "description": "Month Year, e.g. Jul 2022"
+          },
+          "end": {
+            "type": "string",
+            "description": "Month Year or Present"
+          },
+          "responsibilities": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "achievements": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "tools": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "designation",
+          "company",
+          "start",
+          "end",
+          "responsibilities",
+          "achievements"
+        ]
+      }
+    }
+  },
+  "required": [
+    "personal",
+    "education",
+    "academic_achievements",
+    "certifications",
+    "academic_projects",
+    "internships",
+    "work_experience",
+    "positions_of_responsibility",
+    "freelance_projects",
+    "research",
+    "b_plan_competitions",
+    "extra_curricular",
+    "skills",
+    "interests"
+  ]
+}

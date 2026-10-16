@@ -1,0 +1,210 @@
+{
+  "_doc": "One-pager resume content, the AI's output and the renderer's input. Matches the one-pager template section by section. In any text field, **double asterisks** mark phrases to render bold (key results/keywords), as in the sample. Empty arrays mean the section is omitted.",
+  "type": "object",
+  "properties": {
+    "header": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "linkedin": {
+          "type": "string"
+        },
+        "portfolio": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "email",
+        "phone",
+        "linkedin"
+      ]
+    },
+    "summary": {
+      "type": "string",
+      "description": "50-60 words, italic, starts with an action verb, never 'I'"
+    },
+    "education": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "institution": {
+            "type": "string",
+            "description": "ALL CAPS, e.g. DELHI TECHNOLOGICAL UNIVERSITY"
+          },
+          "program": {
+            "type": "string",
+            "description": "Line 2, e.g. 'MBA in Finance' or 'B.Tech (ECE) | **CGPA: 8.6/10**'"
+          },
+          "details": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "0-2 lines of highlights joined with ' | '"
+          },
+          "dates": {
+            "type": "string",
+            "description": "e.g. 2025-Present, 2021-2025"
+          },
+          "location": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "institution",
+          "program",
+          "dates"
+        ]
+      }
+    },
+    "experience": {
+      "$ref": "#/definitions/entries"
+    },
+    "internships": {
+      "$ref": "#/definitions/entries"
+    },
+    "projects": {
+      "$ref": "#/definitions/entries"
+    },
+    "certifications": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "issuer": {
+            "type": "string"
+          },
+          "dates": {
+            "type": "string"
+          },
+          "bullets": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "name",
+          "issuer"
+        ]
+      }
+    },
+    "achievements": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "leadership": {
+      "$ref": "#/definitions/entries"
+    },
+    "extracurricular": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "social_impact": {
+      "$ref": "#/definitions/entries"
+    },
+    "skills": {
+      "type": "object",
+      "properties": {
+        "business": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "technical": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "entries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "org": {
+            "type": "string",
+            "description": "Company / project / society name. Companies in CAPS like the institution names"
+          },
+          "org_description": {
+            "type": "string",
+            "description": "Optional, rendered italic in brackets after the name"
+          },
+          "role": {
+            "type": "string",
+            "description": "Designation / position, bold line under the name"
+          },
+          "dates": {
+            "type": "string",
+            "description": "e.g. Jul’22-Apr’24"
+          },
+          "location": {
+            "type": "string"
+          },
+          "groups": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "heading": {
+                  "type": "string",
+                  "description": "Optional underlined bold-italic sub-skill heading"
+                },
+                "bullets": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "required": [
+                "bullets"
+              ]
+            }
+          }
+        },
+        "required": [
+          "org",
+          "groups"
+        ]
+      }
+    }
+  },
+  "required": [
+    "header",
+    "summary",
+    "education",
+    "experience",
+    "internships",
+    "projects",
+    "certifications",
+    "achievements",
+    "leadership",
+    "extracurricular",
+    "social_impact",
+    "skills"
+  ]
+}

@@ -1,0 +1,43 @@
+// Screenshots of every app state (stubbed backend) at desktop and mobile widths, for design review.
+import { chromium } from 'playwright';
+import http from 'node:http'; import fs from 'node:fs'; import path from 'node:path';
+const root = path.resolve('web');
+const types = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.ttf': 'font/ttf' };
+const srv = http.createServer((q, s) => { const p = path.join(root, decodeURIComponent(q.url.split('?')[0].split('#')[0])); if (!fs.existsSync(p) || fs.statSync(p).isDirectory()) { s.writeHead(404); return s.end(); } s.writeHead(200, { 'content-type': types[path.extname(p)] || 'application/octet-stream' }); fs.createReadStream(p).pipe(s); }).listen(0);
+const port = srv.address().port;
+const resume = JSON.parse(fs.readFileSync('web/assets/sample-onepager.json')); delete resume.header;
+const master = { personal: { name: 'Riya Kapoor', email: 'riya.kapoor2027@example.com', phone: '+91 98XXX XXX21', linkedin: 'https://www.linkedin.com/in/example' }, education: [{ degree: 'MBA in Product Management', institute: "Northfield School of Business", start_year: '2025', end_year: 'Present' }], work_experience: [{ designation: 'Business Analyst', company: 'Kestrel Freight', start: 'Jul 2023', end: 'May 2025', responsibilities: ['Pricing analytics'], achievements: ['Recovered ₹1.8 Cr'] }] };
+const fixtures = { extract: { master }, generate: { resume, flags: [{ section: 'Experience', ask: 'Add the team size for the fuel-surcharge launch' }] }, refine: { resume } };
+const libs = { 'https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js': 'node_modules/pdf-lib/dist/pdf-lib.min.js', 'https://cdn.jsdelivr.net/npm/@pdf-lib/fontkit@1.1.1/dist/fontkit.umd.min.js': 'node_modules/@pdf-lib/fontkit/dist/fontkit.umd.min.js', 'https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js': 'node_modules/jszip/dist/jszip.min.js' };
+const b = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium-1194/chrome-linux/chrome' });
+const out = 'tests/out/ui-', errors = [];
+for (const [tag, vp] of [['d', { width: 1440, height: 900 }], ['m', { width: 390, height: 844 }]]) {
+  const pg = await (await b.newContext({ viewport: vp })).newPage();
+  pg.on('pageerror', (e) => errors.push(tag + ' ' + e.message)); pg.on('console', (m) => m.type() === 'error' && errors.push(tag + ' ' + m.text()));
+  await pg.route('https://fonts.googleapis.com/**', (r) => r.fulfill({ contentType: 'text/css', body: fs.readFileSync('/tmp/geist.css', 'utf8') }));
+  await pg.route('https://cdn.jsdelivr.net/npm/@supabase/**', (r) => r.fulfill({ contentType: 'text/javascript', body: fs.readFileSync('tests/stubs/supabase-stub.js', 'utf8') }));
+  for (const [u, f] of Object.entries(libs)) await pg.route(u, (r) => r.fulfill({ contentType: 'text/javascript', body: fs.readFileSync(f, 'utf8') }));
+  await pg.addInitScript(([f]) => { window.__FIXTURES__ = f; window.__STUB__ = { signedOut: true }; }, [fixtures]);
+  await pg.goto(`http://localhost:${port}/app.html`); await pg.waitForTimeout(600);
+  await pg.screenshot({ path: `${out}${tag}-1-start.png`, fullPage: true });
+  await pg.click('#go-form'); await pg.waitForSelector('#auth:not([hidden])');
+  await pg.fill('#email', 'riya.kapoor2027@example.com'); await pg.click('#send-link'); await pg.waitForTimeout(300);
+  await pg.screenshot({ path: `${out}${tag}-2-auth.png` });
+  await pg.fill('#code', '123456'); await pg.click('#verify-code');
+  await pg.waitForSelector('#v-master:not([hidden])'); await pg.waitForTimeout(300);
+  for (const [k, v] of Object.entries(master.personal)) await pg.fill(`#f-personal-${k}`, v);
+  await pg.click('[data-add="education"]'); await pg.fill('#f-education-0-degree', 'MBA in Product Management'); await pg.fill('#f-education-0-institute', "Northfield School of Business");
+  await pg.screenshot({ path: `${out}${tag}-3-master.png` });
+  await pg.click('#create'); await pg.waitForTimeout(250);
+  await pg.screenshot({ path: `${out}${tag}-4-busy.png` });
+  await pg.waitForSelector('#v-resume:not([hidden])', { timeout: 20000 });
+  await pg.waitForFunction(() => document.querySelector('#busy').hidden, null, { timeout: 30000 }); await pg.waitForTimeout(500);
+  await pg.screenshot({ path: `${out}${tag}-5-resume.png`, fullPage: tag === 'm' });
+  await pg.click('[data-tab="edit"]'); await pg.waitForTimeout(200);
+  await pg.screenshot({ path: `${out}${tag}-6-edit.png` });
+  await pg.goto(`http://localhost:${port}/app.html`); await pg.waitForTimeout(700);
+  await pg.screenshot({ path: `${out}${tag}-7-start-saved.png`, fullPage: true });
+  console.log(tag, 'overflow', await pg.evaluate(() => [document.documentElement.scrollWidth, innerWidth]));
+}
+console.log(JSON.stringify(errors));
+await b.close(); srv.close();

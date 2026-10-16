@@ -1,0 +1,6 @@
+{
+  "extract":  { "model": "gemini-flash-latest", "temperature": 0.1, "thinking": "low", "timeout_s": 110 },
+  "generate": { "model": "gemini-flash-latest", "temperature": 0.5, "thinking": "low", "timeout_s": 125 },
+  "refine":   { "model": "gemini-flash-latest", "temperature": 0.3, "thinking": "low", "timeout_s": 100 },
+  "fallbacks": ["gemini-3.7-flash", "gemini-3.5-flash", "gemini-3-flash-preview"]
+}

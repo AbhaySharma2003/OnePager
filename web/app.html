@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Build your one-pager · OnePager</title>
+<meta name="description" content="Turn your CV into a one-page resume that follows proven resume rules. Download as PDF or Word.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="assets/ui.css">
+<link rel="stylesheet" href="app/app.css">
+<link rel="stylesheet" href="resume/resume.css">
+</head>
+<body>
+<header class="top">
+  <div class="top-in">
+    <a class="wordmark" href="./" aria-label="OnePager home"><i aria-hidden="true"></i>OnePager</a>
+    <ol class="steps" id="steps" aria-label="Progress">
+      <li data-step="start"><span class="dot">1</span>Your details</li>
+      <li data-step="master"><span class="dot">2</span>Master CV</li>
+      <li data-step="resume"><span class="dot">3</span>One-pager</li>
+    </ol>
+    <div class="who" id="who"></div>
+  </div>
+</header>
+
+<main>
+  <!-- 1. START -->
+  <section class="view" id="v-start" hidden>
+    <div class="page-head">
+      <h1>Build your one-pager</h1>
+      <p class="lede">Tell us what you're applying for, then add your CV. We turn it into your Master CV and write a one-pager in a clean, recruiter-friendly template.</p>
+      <p class="offer" id="offer" hidden></p>
+    </div>
+
+    <div class="resume-list" id="saved" hidden>
+      <h2 class="h-sm">Pick up where you left off</h2>
+      <ul id="saved-list"></ul>
+    </div>
+
+    <ol class="flow">
+      <li class="flow-step">
+        <div class="flow-num" aria-hidden="true">1</div>
+        <div class="flow-body">
+          <h2 class="h-md">What are you applying for?</h2>
+          <p class="muted">We use the domain's keywords wherever your experience supports them.</p>
+          <input type="hidden" id="domain" value="General">
+          <div class="domain-chips" id="domain-chips" role="radiogroup" aria-label="Target domain"></div>
+          <div class="target-row">
+            <label class="fld"><span>Target role <small>optional</small></span><input id="role" placeholder="e.g. Associate Product Manager"></label>
+          </div>
+          <details class="jd-box">
+            <summary>Tailor it to a job description <small>optional</small></summary>
+            <label class="fld"><span class="sr-only">Job description</span><textarea id="jd" rows="5" placeholder="Paste the JD. We match its keywords where your experience supports them."></textarea></label>
+          </details>
+        </div>
+      </li>
+      <li class="flow-step">
+        <div class="flow-num" aria-hidden="true">2</div>
+        <div class="flow-body">
+          <h2 class="h-md">Add your experience</h2>
+          <p class="muted">Either way, everything is saved as your Master CV, which you can edit any time.</p>
+          <div class="choices">
+            <label class="drop" id="drop-cv" tabindex="0">
+              <input type="file" id="file-cv" accept=".pdf,.docx,.xlsx,.xls,.csv,.txt" hidden>
+              <span class="drop-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4"/><path d="M7 9l5-5 5 5"/><path d="M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/></svg></span>
+              <span class="drop-title">Upload your CV</span>
+              <span class="drop-sub">Drop a file here or <u>choose one</u></span>
+              <span class="drop-types">PDF, Word or a Master CV Excel · up to 8 MB</span>
+            </label>
+            <div class="alt">
+              <h3>No CV yet?</h3>
+              <p>Fill the Master CV form section by section, with a guideline for each section beside it.</p>
+              <button class="btn ghost" id="go-form" type="button">Fill the Master CV form</button>
+            </div>
+          </div>
+        </div>
+      </li>
+    </ol>
+  </section>
+
+  <!-- 2. MASTER CV FORM -->
+  <section class="view" id="v-master" hidden>
+    <div class="page-head">
+      <h1>Your Master CV</h1>
+      <p class="lede">Everything you've done, in a clear Master CV structure. Add numbers wherever you can: how many, how much, out of how many. Your one-pager is written only from what's here.</p>
+    </div>
+    <div class="two">
+      <nav class="toc" id="toc" aria-label="Sections"></nav>
+      <div>
+        <form id="master-form" onsubmit="return false"></form>
+      </div>
+    </div>
+    <div class="bar">
+      <div class="bar-in">
+        <span class="note" id="master-note">Saved to your account automatically</span>
+        <button class="btn lg" id="create" type="button">Create my one-pager</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. RESUME -->
+  <section class="view" id="v-resume" hidden>
+    <div class="r-head">
+      <div>
+        <h1 id="r-title">Your one-pager</h1>
+        <p class="lede" id="r-sub"></p>
+      </div>
+      <div class="r-actions">
+        <button class="btn ghost" id="edit-master" type="button">Edit Master CV</button>
+        <button class="btn ghost" id="regen" type="button">Rewrite</button>
+        <button class="btn" id="dl-pdf" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11"/><path d="M7 10l5 5 5-5"/><path d="M5 20h14"/></svg>PDF</button>
+        <button class="btn dark" id="dl-docx" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11"/><path d="M7 10l5 5 5-5"/><path d="M5 20h14"/></svg>Word</button>
+        <button class="btn pay" id="pay-top" type="button" hidden><span>Pay ₹<span class="price">49</span> to unlock</span></button>
+      </div>
+    </div>
+    <div class="work">
+      <div class="paper-wrap" id="paper-wrap">
+        <div class="paper-scale" id="paper-scale"><div class="op-print-root" id="paper"></div></div>
+        <div class="paywall" id="paywall" hidden>
+          <div class="paywall-card" role="dialog" aria-labelledby="pw-h">
+            <span class="lock" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span>
+            <h2 id="pw-h">Your one-pager is ready</h2>
+            <p>To see your one-pager and download it as PDF or Word, pay <b>₹<span class="price">49</span></b>.</p>
+            <button class="btn pay lg" id="pay" type="button"><span>Pay ₹<span class="price">49</span> to unlock</span></button>
+            <p class="hint" id="pay-msg">One-time payment for this one-pager · Secure checkout by Dodo Payments</p>
+          </div>
+        </div>
+      </div>
+      <aside class="side">
+        <div class="card" id="lock-card" hidden>
+          <h3>Unlock to see the checks</h3>
+          <p class="hint">Your first one-pager was free. This one is fully written, fitted to the template and checked against the resume rules. Pay once to see it, edit it and download it. It includes up to 3 rewrites.</p>
+        </div>
+        <div class="card" id="fit-card"></div>
+        <div class="card">
+          <div class="tabs" role="tablist">
+            <button role="tab" aria-selected="true" data-tab="checks">Resume checks</button>
+            <button role="tab" aria-selected="false" data-tab="edit">Edit text</button>
+          </div>
+          <div id="tab-checks"></div>
+          <div id="tab-edit" hidden></div>
+        </div>
+      </aside>
+    </div>
+  </section>
+</main>
+
+<div class="overlay" id="auth" hidden><div class="dialog auth" role="dialog" aria-modal="true" aria-labelledby="auth-h">
+  <span class="wordmark" aria-hidden="true"><i></i>OnePager</span>
+  <h2 id="auth-h">Sign in to save your work</h2>
+  <p class="muted">Your Master CV and one-pagers are saved privately to your account.</p>
+  <button class="btn ghost lg" id="google" type="button" hidden>
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285F4" d="M22.5 12.3c0-.8-.1-1.5-.2-2.2H12v4.2h5.9a5 5 0 0 1-2.2 3.3v2.7h3.5c2.1-1.9 3.3-4.7 3.3-8z"/><path fill="#34A853" d="M12 23c3 0 5.4-1 7.2-2.7l-3.5-2.7c-1 .7-2.2 1.1-3.7 1.1-2.9 0-5.3-1.9-6.2-4.5H2.2v2.8A11 11 0 0 0 12 23z"/><path fill="#FBBC05" d="M5.8 14.2a6.6 6.6 0 0 1 0-4.3V7.1H2.2a11 11 0 0 0 0 9.9l3.6-2.8z"/><path fill="#EA4335" d="M12 5.4c1.6 0 3.1.6 4.2 1.7l3.1-3.1A11 11 0 0 0 2.2 7.1l3.6 2.8C6.7 7.3 9.1 5.4 12 5.4z"/></svg>
+    Continue with Google
+  </button>
+  <div class="or" id="or" hidden><span>or</span></div>
+  <label class="fld" for="email"><span>Email</span><input id="email" type="email" placeholder="you@college.edu" autocomplete="email"></label>
+  <button class="btn lg" id="send-link" type="button">Email me a sign-in code</button>
+  <div id="code-step" class="code-step" hidden>
+    <label class="fld" for="code"><span>6-digit code from the email</span></label>
+    <input id="code" class="input" inputmode="numeric" autocomplete="one-time-code" maxlength="10" placeholder="••••••">
+    <button class="btn lg" id="verify-code" type="button">Sign in</button>
+  </div>
+  <p id="auth-msg" class="hint" role="status"></p>
+</div></div>
+
+<div class="overlay" id="busy" hidden><div class="dialog busy-card" aria-live="polite">
+  <div class="busy-top"><h3 id="busy-t">Working…</h3><span class="elapsed" id="busy-time">0:00</span></div>
+  <ol class="progress" id="busy-steps"></ol>
+  <p class="hint" id="busy-s"></p>
+  <p class="busy-foot">Keep this tab open. This usually takes under a minute.</p>
+</div></div>
+
+<script type="module" src="app/main.js"></script>
+</body>
+</html>

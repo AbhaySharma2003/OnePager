@@ -1,0 +1,14 @@
+node_modules/
+tests/out/
+.DS_Store
+*.log
+.env
+# Private reference documents and test data derived from a real CV. Never commit.
+inputs/
+tests/fixtures/ai_*.json
+
+# Local helper files
+onepager.zip
+check-setup.bat
+setup-report.txt
+publish-msg.txt

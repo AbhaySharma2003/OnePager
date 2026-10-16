@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OnePager · AI one-page resume builder</title>
+<meta name="description" content="Upload your CV or fill the Master CV form. OnePager writes your one-page resume in a clean one-page template, follows proven resume rules, and fits each bullet to one line.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="assets/ui.css">
+<link rel="stylesheet" href="resume/resume.css">
+<style>
+.wrap { width: min(1160px, 100% - 40px); margin-inline: auto; }
+
+/* nav */
+.nav { position: sticky; top: 0; z-index: 20; background: rgba(247, 248, 250, .86); backdrop-filter: saturate(1.4) blur(10px); border-bottom: 1px solid transparent; transition: border-color .2s; }
+.nav.scrolled { border-bottom-color: var(--line); }
+.nav-in { display: flex; align-items: center; gap: 28px; min-height: 64px; }
+.wordmark { display: inline-flex; align-items: center; gap: 9px; font-weight: 700; font-size: 18px; letter-spacing: -0.02em; text-decoration: none; }
+.wordmark i { width: 18px; height: 22px; border-radius: 3px; background: var(--surface); border: 1.5px solid var(--ink); position: relative; flex: none; }
+.wordmark i::after { content: ""; position: absolute; left: 3px; right: 3px; top: 5px; height: 4px; background: var(--marker); }
+.nav-links { display: flex; gap: 22px; font-size: 14.5px; color: var(--muted); }
+.nav-links a { text-decoration: none; }
+.nav-links a:hover { color: var(--ink); }
+.nav-cta { margin-left: auto; display: flex; gap: 10px; }
+
+/* hero */
+.hero { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.08fr); gap: 56px; align-items: center; padding: 56px 0 72px; }
+.for { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; color: var(--ink-2); background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 5px 12px 5px 6px; }
+.for b { background: var(--marker); color: var(--ink); border-radius: 999px; padding: 2px 9px; font-weight: 600; font-size: 12.5px; }
+.hero h1 { font-size: clamp(38px, 5.4vw, 62px); line-height: 1.03; letter-spacing: -0.035em; margin-top: 20px; }
+.hero .sub { margin-top: 20px; font-size: 18px; line-height: 1.55; color: var(--ink-2); max-width: 34em; }
+.hero .ctas { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 30px; }
+.proof { display: flex; gap: 8px 20px; flex-wrap: wrap; margin-top: 26px; padding: 0; list-style: none; font-size: 14.5px; color: var(--ink-2); }
+.proof li { display: flex; align-items: center; gap: 7px; }
+.proof svg { width: 17px; height: 17px; color: var(--good); }
+.price-note { margin-top: 18px; font-size: 14.5px; color: var(--muted); }
+.price-note strong { color: var(--ink); font-weight: 600; }
+
+/* the live one-pager */
+.stage { position: relative; }
+.paper { position: relative; aspect-ratio: 595 / 700; overflow: hidden; border-radius: 6px; background: #fff; box-shadow: var(--shadow-paper); }
+.paper::after { content: ""; position: absolute; inset: auto 0 0 0; height: 140px; background: linear-gradient(rgba(255,255,255,0), #fff 85%); pointer-events: none; }
+.paper .scale { transform-origin: top left; }
+.paper .op-page { box-shadow: none; margin: 0; }
+.note { position: absolute; display: flex; align-items: center; gap: 9px; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 9px 13px; font-size: 13.5px; font-weight: 500; box-shadow: var(--shadow-pop); white-space: nowrap; }
+.note::before { content: ""; width: 10px; height: 10px; border-radius: 3px; background: var(--marker); outline: 1.5px solid #E2C800; flex: none; }
+.note.n1 { left: -34px; top: 230px; }
+.note.n2 { right: -22px; top: 128px; }
+.note.n3 { right: 18px; bottom: 38px; }
+
+/* sections */
+section { padding: 88px 0; }
+.sec-head { max-width: 640px; margin-bottom: 44px; }
+.sec-head h2 { font-size: clamp(30px, 3.6vw, 42px); letter-spacing: -0.03em; }
+.sec-head p { margin-top: 14px; font-size: 17px; color: var(--ink-2); }
+.band { background: var(--surface); border-block: 1px solid var(--line); }
+
+.steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; list-style: none; margin: 0; padding: 0; }
+.steps li { position: relative; padding: 0 28px 0 0; }
+.steps li + li { padding-left: 28px; border-left: 1px solid var(--line); }
+.steps .n { display: inline-grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: var(--ink); color: #fff; font-weight: 600; font-size: 15px; }
+.steps h3 { font-size: 20px; margin-top: 18px; }
+.steps p { margin-top: 8px; color: var(--ink-2); }
+.steps small { display: block; margin-top: 12px; color: var(--muted); font-size: 13.5px; }
+
+.checks-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 56px; align-items: start; }
+.checklist { list-style: none; padding: 0; margin: 0; }
+.checklist li { display: grid; grid-template-columns: 26px 1fr; gap: 12px; padding: 16px 0; border-top: 1px solid var(--line); }
+.checklist li:last-child { border-bottom: 1px solid var(--line); }
+.checklist svg { width: 20px; height: 20px; color: var(--good); margin-top: 2px; }
+.checklist b { font-weight: 600; }
+.checklist span { display: block; color: var(--muted); font-size: 14.5px; margin-top: 2px; }
+
+.fix { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-lg); padding: 26px; box-shadow: var(--shadow-pop); position: sticky; top: 96px; }
+.fix-row + .fix-row { margin-top: 22px; padding-top: 22px; border-top: 1px dashed var(--line-2); }
+.fix-label { display: flex; justify-content: space-between; align-items: center; font-size: 13.5px; color: var(--muted); }
+.fix-text { margin-top: 10px; font-size: 15.5px; line-height: 1.55; }
+.fix-text.before { color: var(--muted); text-decoration: line-through; text-decoration-color: rgba(211, 58, 44, .55); }
+.lines { display: flex; gap: 4px; margin-top: 12px; }
+.lines i { height: 6px; border-radius: 3px; background: var(--sunken); flex: 1; }
+.lines i.on { background: var(--bad); }
+.lines.ok i.on { background: var(--good); }
+
+.prices { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; max-width: 760px; }
+.plan { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-lg); padding: 28px; }
+.plan.feat { border: 2px solid var(--ink); }
+.plan h3 { font-size: 16px; font-weight: 600; color: var(--ink-2); letter-spacing: -0.01em; }
+.plan .amt { font-size: 48px; font-weight: 700; letter-spacing: -0.04em; margin-top: 8px; line-height: 1; }
+.plan .amt small { font-size: 15px; font-weight: 500; color: var(--muted); letter-spacing: 0; }
+.plan ul { margin: 18px 0 0; padding-left: 18px; color: var(--ink-2); display: grid; gap: 6px; }
+
+.faq { max-width: 760px; }
+.faq details { border-top: 1px solid var(--line); }
+.faq details:last-child { border-bottom: 1px solid var(--line); }
+.faq summary { cursor: pointer; list-style: none; display: flex; justify-content: space-between; gap: 16px; padding: 20px 0; font-weight: 600; font-size: 17px; }
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after { content: "+"; font-weight: 400; font-size: 22px; line-height: 1; color: var(--muted); transition: transform .2s; }
+.faq details[open] summary::after { transform: rotate(45deg); }
+.faq details p { padding: 0 0 20px; color: var(--ink-2); max-width: 62ch; }
+
+.final { background: var(--ink); color: #fff; border-radius: 24px; padding: 56px; display: flex; justify-content: space-between; align-items: center; gap: 32px; flex-wrap: wrap; }
+.final h2 { font-size: clamp(28px, 3.4vw, 40px); max-width: 16em; letter-spacing: -0.03em; }
+.final p { margin-top: 10px; color: rgba(255,255,255,.72); }
+.final .btn { background: var(--marker); color: var(--ink); }
+.final .btn:hover { background: #fff; }
+footer { padding: 36px 0 48px; color: var(--muted); font-size: 14px; display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+
+@media (max-width: 960px) {
+  .nav-links { display: none; }
+  .hero { grid-template-columns: minmax(0, 1fr); gap: 40px; padding-top: 32px; }
+  .note.n1 { left: 10px; top: 210px; } .note.n2 { right: 10px; top: 120px; }
+  .steps { grid-template-columns: 1fr; gap: 28px; }
+  .steps li, .steps li + li { padding: 0; border: 0; }
+  .checks-grid { grid-template-columns: 1fr; gap: 36px; }
+  .fix { position: static; }
+  section { padding: 64px 0; }
+  .final { padding: 36px 28px; }
+}
+@media (max-width: 560px) {
+  .nav-cta .btn.ghost { display: none; }
+  .prices { grid-template-columns: 1fr; }
+  .note { font-size: 12.5px; padding: 7px 10px; }
+  .note.n3 { display: none; }
+  .hero .ctas .btn { flex: 1; }
+}
+</style>
+</head>
+<body>
+<header class="nav" id="nav">
+  <div class="wrap nav-in">
+    <a class="wordmark" href="./" aria-label="OnePager home"><i aria-hidden="true"></i>OnePager</a>
+    <nav class="nav-links" aria-label="Sections">
+      <a href="#how">How it works</a><a href="#checks">What we check</a><a href="#pricing" data-pay="live">Pricing</a><a href="#faq">FAQ</a>
+    </nav>
+    <div class="nav-cta">
+      <a class="btn ghost sm" href="app.html">Sign in</a>
+      <a class="btn sm" href="app.html">Build my one-pager</a>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="wrap hero">
+    <div>
+      <span class="for"><b>AI</b> One-page resumes that get shortlisted</span>
+      <h1>Your whole CV, fitted onto one page.</h1>
+      <p class="sub">Upload your CV or fill the Master CV form. OnePager writes your one-pager in a clean, recruiter-friendly template, follows proven resume rules, and fits each bullet to exactly one line.</p>
+      <div class="ctas">
+        <a class="btn lg" href="app.html">Build my one-pager</a>
+        <a class="btn lg ghost" href="#how">See how it works</a>
+      </div>
+      <ul class="proof">
+        <li><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10.5l4 4 8-9"/></svg>Classic one-page template</li>
+        <li><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10.5l4 4 8-9"/></svg>Nothing made up</li>
+        <li><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10.5l4 4 8-9"/></svg>PDF and Word</li>
+      </ul>
+      <p class="price-note" data-pay="beta"><strong>Free while in beta.</strong> Sign in with your email to start.</p>
+      <p class="price-note" data-pay="live" hidden><strong>Your first one-pager is free.</strong> After that, ₹<span class="price">49</span> each.</p>
+    </div>
+
+    <div class="stage" aria-label="Example one-pager made with OnePager">
+      <div class="paper" id="paper"><div class="scale" id="scale"></div></div>
+      <div class="note n1">Every bullet fits one line</div>
+      <div class="note n2">Keywords for your target role</div>
+      <div class="note n3">Numbers only from your CV</div>
+    </div>
+  </div>
+
+  <section class="band" id="how">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>From any CV to a job-ready one-pager</h2>
+        <p>About two minutes of your time. The writing, fitting and checking happen on our side.</p>
+      </div>
+      <ol class="steps">
+        <li><span class="n">1</span><h3>Add your CV</h3><p>Upload a PDF, Word file or a Master CV Excel. No CV yet? Fill the Master CV form section by section.</p><small>Pick your target domain and role. Paste a JD if you have one.</small></li>
+        <li><span class="n">2</span><h3>We build your Master CV</h3><p>Everything you've done is sorted into Master CV sections and saved to your account, ready for every future application.</p><small>Edit it any time; your one-pager is written only from it.</small></li>
+        <li><span class="n">3</span><h3>Download your one-pager</h3><p>Written in a clean one-page template for your target role, fitted line by line, and checked against the resume rules.</p><small>Download a PDF to apply with or a Word file to tweak.</small></li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="checks">
+    <div class="wrap checks-grid">
+      <div>
+        <div class="sec-head" style="margin-bottom:28px">
+          <h2>Checked against the resume rules, line by line</h2>
+          <p>The rules recruiters judge resumes by, applied before you ever hit send.</p>
+        </div>
+        <ul class="checklist">
+          <li><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10.5l4 4 8-9"/></svg><div><b>One line per bullet</b><span>Measured on the real page, not guessed. Spill-overs and half-empty lines get rewritten.</span></div></li>
+          <li><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10.5l4 4 8-9"/></svg><div><b>Result, action, context</b><span>Strong verbs, the outcome first, then how you did it.</span></div></li>
+          <li><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10.5l4 4 8-9"/></svg><div><b>Facts from your CV only</b><span>Every number, date and place must exist in your Master CV. Missing numbers are flagged for you to add.</span></div></li>
+          <li><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10.5l4 4 8-9"/></svg><div><b>Template details</b><span>Calibri 9, gridlines, yellow section labels, institution names in caps, Class X / XII, score cut-offs.</span></div></li>
+          <li><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10.5l4 4 8-9"/></svg><div><b>Domain keywords</b><span>Marketing, Sales, Product, Finance, Consulting and more, used only where they're true.</span></div></li>
+        </ul>
+      </div>
+      <div class="fix" aria-label="Example of a bullet being fixed">
+        <div class="fix-row">
+          <div class="fix-label"><span>Before</span><span class="chip bad">2 lines</span></div>
+          <p class="fix-text before">Was responsible for working on revenue forecasting and helped the team make reports for management on a regular basis</p>
+          <div class="lines" aria-hidden="true"><i class="on"></i><i class="on"></i></div>
+        </div>
+        <div class="fix-row">
+          <div class="fix-label"><span>After</span><span class="chip good">1 line</span></div>
+          <p class="fix-text">Cut forecast variance from <b>9% to 3%</b> by building a driver-based revenue model for a <b>₹40 Cr</b> region</p>
+          <div class="lines ok" aria-hidden="true"><i class="on"></i><i></i></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" id="pricing" data-pay="live" hidden>
+    <div class="wrap">
+      <div class="sec-head"><h2>Pay only after you've seen it</h2><p>Your first one-pager is on us. After that, you see each one is ready before you pay.</p></div>
+      <div class="prices">
+        <div class="plan feat"><h3>Your first one-pager</h3><div class="amt">Free</div><ul><li>Master CV from your CV or the form</li><li>One-pager for the domain you pick</li><li>PDF and Word download</li><li>Up to 3 rewrites</li></ul></div>
+        <div class="plan"><h3>Every one-pager after that</h3><div class="amt">₹<span class="price">49</span> <small>each</small></div><ul><li>A new one-pager for another domain, role or JD</li><li>See it's ready before you pay</li><li>PDF and Word download</li><li>Up to 3 rewrites each</li></ul></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq">
+    <div class="wrap">
+      <div class="sec-head"><h2>Questions</h2></div>
+      <div class="faq">
+        <details><summary>Will it make up achievements?</summary><p>No. Every number, date, company and place in your one-pager has to exist in your Master CV, and OnePager checks this before you download. Where a number would make a bullet stronger, it asks you to add it.</p></details>
+        <details><summary>Does it follow the one-page template exactly?</summary><p>Yes. It uses a classic one-page resume template and a strict checklist: Calibri 9, gridlines, yellow section labels, RAC bullets, Class X / XII and the score rules.</p></details>
+        <details><summary>What can I upload?</summary><p>A PDF or Word CV, or a Master CV Excel. If you don't have a CV, fill the Master CV form instead.</p></details>
+        <details><summary>Can I edit the result?</summary><p>Yes. Edit any line on the page, rewrite the whole one-pager, or download the Word file and change it yourself.</p></details>
+        <details data-pay="live" hidden><summary>How does payment work?</summary><p>Your first one-pager is free. For each one after that, you go through the whole process for free and pay ₹<span class="price">49</span> only once it's ready, to see and download it.</p></details>
+        <details><summary>Who can see my CV?</summary><p>Only you. Your Master CV and one-pagers are saved privately to your account.</p></details>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap">
+    <div class="final">
+      <div><h2>A sharper one-pager, ready for your next application.</h2><p>Upload your CV, pick a domain, download a page that passes every check.</p></div>
+      <a class="btn lg" href="app.html">Build my one-pager</a>
+    </div>
+  </div>
+</main>
+
+<div class="wrap"><footer><span>OnePager</span><span>© 2026</span></footer></div>
+
+<script type="module">
+import { renderResume } from "./resume/render.js";
+import { PAYMENTS_LIVE, PRICE_INR } from "./config.js";
+
+// Pricing copy appears only once payments are live.
+for (const el of document.querySelectorAll("[data-pay]")) el.hidden = (el.dataset.pay === "live") !== PAYMENTS_LIVE;
+for (const el of document.querySelectorAll("span.price")) el.textContent = PRICE_INR;
+
+// Live sample: the real renderer drawing an example one-pager, scaled to the column.
+const scale = document.getElementById("scale"), paper = document.getElementById("paper");
+const sample = await (await fetch("assets/sample-onepager.json")).json();
+const page = renderResume(sample, scale);
+const fit = () => { scale.style.transform = `scale(${paper.clientWidth / page.offsetWidth})`; };
+await document.fonts.ready; fit();
+new ResizeObserver(fit).observe(paper);
+
+const nav = document.getElementById("nav");
+addEventListener("scroll", () => nav.classList.toggle("scrolled", scrollY > 8), { passive: true });
+</script>
+</body>
+</html>
