@@ -1,0 +1,18 @@
+/* Website-only "professional" look for the sample resume (no highlight, roomier black grid).
+   Downloads still use resume/resume.css unchanged. */
+.op-page.pro { padding: 20pt 14pt 0 14pt; font-size: 9.3pt; line-height: 12.3pt; }
+.op-page.pro .op-head { margin-left: 0; padding-bottom: 11pt; line-height: 14pt; }
+.op-page.pro .op-name { font-size: 13pt; line-height: 18pt; }
+.op-page.pro .op-table { width: 567pt; }
+.op-page.pro .op-table col.c1 { width: 74pt; }
+.op-page.pro .op-table col.c2 { width: 411pt; }
+.op-page.pro .op-table col.c3 { width: 82pt; }
+.op-page.pro .op-table td { border: 1.1pt solid #000; padding: 5pt 5pt 5.6pt 5.5pt; }
+.op-page.pro .op-label { font-size: 9.8pt; line-height: 12.3pt; }
+.op-page.pro .op-summary { font-style: normal; }
+.op-page.pro .op-role { font-style: italic; }
+.op-page.pro .op-date { font-size: 8.6pt; white-space: nowrap; letter-spacing: -0.1pt; }
+.op-page.pro .op-date .loc { font-weight: 400; }
+.op-page.pro .op-bullet { padding-left: 11pt; text-indent: -8pt; }
+.op-page.pro .op-bullet::before { content: "\2022"; font-family: inherit; font-size: 9.3pt; line-height: inherit; padding-right: 4pt; }
+.op-page.pro tr + tr td.op-label, .op-page.pro td { vertical-align: top; }

@@ -186,3 +186,104 @@ h1 { font-size: clamp(28px, 3.4vw, 38px); letter-spacing: -0.03em; }
   .msec { padding: 18px; }
 }
 @media print { .top, .side, .bar, .toast, .overlay { display: none !important; } }
+
+/* ---- Professional grid look (matches the resume: black rules, square corners, bold labels) ---- */
+body { background: var(--canvas); }
+.top { background: rgba(255, 255, 255, .94); border-bottom: var(--rule) solid var(--ink); }
+.wordmark { font-size: 19px; letter-spacing: .02em; text-transform: uppercase; }
+.wordmark i { border-radius: 0; background: linear-gradient(var(--ink), var(--ink)) 5px 0 / 1.2px 100% no-repeat, linear-gradient(var(--ink), var(--ink)) 0 7px / 100% 1.2px no-repeat, linear-gradient(var(--ink), var(--ink)) 0 13px / 100% 1.2px no-repeat, #fff; }
+.wordmark i::after { content: none; }
+h1 { font-size: clamp(32px, 3.8vw, 44px); letter-spacing: -0.015em; }
+.h-sm { font-size: 16px; font-weight: 700; }
+.h-md { font-size: 23px; letter-spacing: -0.01em; }
+.lede { font-size: 18px; }
+.hint { font-size: 14.5px; }
+
+/* stepper: a one-row table */
+.steps { gap: 0; border: var(--rule) solid var(--ink); background: var(--surface); }
+.steps li { border-radius: 0; padding: 6px 14px 6px 8px; font-size: 15px; font-weight: 700; }
+.steps li + li { border-left: var(--rule) solid var(--ink); }
+.steps li + li::before { content: none; }
+.steps .dot { border-radius: 0; border: 1.2px solid var(--ink); font-size: 13px; font-weight: 700; }
+.steps li.on { background: var(--ink); color: #fff; }
+.steps li.on .dot { background: #fff; color: var(--ink); border-color: #fff; }
+.steps li.done .dot { background: var(--ink); border-color: var(--ink); color: #fff; }
+
+/* start */
+.offer { border-radius: 0; border: var(--rule) solid var(--ink); padding: 0 12px 0 0; font-size: 15.5px; align-items: stretch; }
+.offer b { border-radius: 0; padding: 4px 10px; display: flex; align-items: center; }
+.resume-list { border: var(--rule) solid var(--ink); border-radius: 0; padding: 0; }
+.resume-list .h-sm { padding: 12px 18px; border-bottom: var(--rule) solid var(--ink); background: var(--sunken); }
+.resume-list ul { margin: 0; }
+.resume-list li { padding: 12px 18px; border-top: 1px solid var(--ink); }
+.resume-list li:first-child { border-top: 0; }
+.resume-list li b { font-weight: 700; }
+.flow-step:not(:last-child)::before { width: 1.5px; background: var(--ink); }
+.flow-num { border-radius: 0; font-weight: 700; }
+.flow-body > .muted { font-size: 16px; }
+.domain-chip { border-radius: 0; border: 1.2px solid var(--ink); font-size: 15.5px; font-weight: 700; color: var(--ink); }
+.domain-chip:hover { background: var(--sunken); }
+.domain-chip[aria-checked="true"] { background: var(--ink); color: #fff; }
+.jd-box summary { font-size: 15.5px; font-weight: 700; }
+.drop { border: 1.5px dashed var(--ink); border-radius: 0; }
+.drop:hover, .drop:focus-visible, .drop.over { border-color: var(--ink); background: var(--sunken); }
+.drop-icon { border-radius: 0; background: var(--ink); color: #fff; }
+.drop-title { font-size: 20px; font-weight: 700; }
+.drop-types { font-size: 14px; }
+.alt { border: var(--rule) solid var(--ink); border-radius: 0; background: var(--surface); }
+.alt h3 { font-size: 19px; }
+.alt p { font-size: 15.5px; }
+
+/* master CV form: sections are bordered blocks, the contents list is the label column */
+.toc { border: var(--rule) solid var(--ink); background: var(--surface); gap: 0; font-size: 15px; }
+.toc a { border-radius: 0; color: var(--ink); font-weight: 700; padding: 8px 12px; }
+.toc a + a { border-top: 1px solid var(--ink); }
+.toc a:hover { background: var(--sunken); }
+.msec { border: var(--rule) solid var(--ink); border-radius: 0; padding: 0; }
+.msec > header { padding: 12px 20px; border-bottom: var(--rule) solid var(--ink); background: var(--sunken); }
+.msec > *:not(header) { margin-left: 20px; margin-right: 20px; }
+.msec > *:last-child { margin-bottom: 20px; }
+.msec h3 { font-size: 19px; }
+.msec .hint { margin-top: 12px; }
+.count { border-radius: 0; background: var(--ink); color: #fff; }
+.item { border: 1px solid var(--ink); border-radius: 0; }
+.item[open] { border-color: var(--ink); box-shadow: none; }
+.item[open] > summary { border-bottom: 1px solid var(--hair); }
+.item summary { font-weight: 700; }
+.item > .grid { padding-top: 12px; }
+.add { border: 1.2px dashed var(--ink); border-radius: 0; font-weight: 700; color: var(--ink); }
+.add:hover { border-color: var(--ink); color: var(--ink); background: var(--sunken); }
+.bar { background: rgba(255, 255, 255, .95); border-top: var(--rule) solid var(--ink); }
+.bar .note { font-size: 15px; }
+
+/* resume workspace */
+.paper-wrap { border: var(--rule) solid var(--ink); border-radius: 0;
+  background: linear-gradient(#E3E3DE 1px, transparent 1px) 0 0 / 40px 40px, linear-gradient(90deg, #E3E3DE 1px, transparent 1px) 0 0 / 40px 40px, var(--canvas); }
+.card { border: var(--rule) solid var(--ink); border-radius: 0; }
+.card h3 { font-size: 18px; }
+.pill { border-radius: 0; border: 1px solid currentColor; font-size: 14px; font-weight: 700; }
+.igroup { border-top: 1px solid var(--ink); }
+.igroup summary { font-size: 15px; font-weight: 700; }
+.issues { font-size: 15px; }
+.issues li::before { border-radius: 0; }
+.tabs { padding: 0; gap: 0; border: var(--rule) solid var(--ink); border-radius: 0; background: var(--surface); }
+.tabs button { border-radius: 0; font-weight: 700; font-size: 15px; color: var(--ink); }
+.tabs button + button { border-left: var(--rule) solid var(--ink); }
+.tabs button[aria-selected="true"] { background: var(--ink); color: #fff; box-shadow: none; }
+.editor .blk { border-top: 1px solid var(--ink); }
+.editor label { font-size: 14px; font-weight: 700; color: var(--ink); }
+.editor textarea, .editor input { border-color: #8C8C88; border-radius: 0; font-size: 15px; }
+.editor textarea:focus { border-color: var(--ink); }
+.paywall { background: linear-gradient(rgba(244,244,241,.1), rgba(244,244,241,.6)); }
+.paywall-card { border: var(--rule) solid var(--ink); border-radius: 0; }
+.paywall-card .lock { border-radius: 0; background: var(--ink); color: #fff; }
+
+/* dialogs */
+.overlay { background: rgba(17, 17, 17, .45); }
+.dialog { border: var(--rule) solid var(--ink); border-radius: 0; }
+.or::before, .or::after { background: var(--ink); }
+.elapsed { color: var(--ink); }
+.progress li::before { border-color: #B5B5B0; }
+.progress li.now::before { border-color: #DADAD5; border-top-color: var(--ink); }
+#busy-s { border-top: 1px solid var(--ink); }
+.busy-foot { font-size: 14px; }

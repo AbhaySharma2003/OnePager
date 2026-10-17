@@ -1,0 +1,51 @@
+{
+ "header": { "name": "Arjun Mehta", "email": "arjun.mehta@example.com", "phone": "+91 98765 43210", "linkedin": "https://linkedin.com/in/arjunmehta-demo" },
+ "summary": "Data-driven and product-focused professional with 2 years of experience in product analytics and business analysis. Skilled in SQL, Python and data visualization, with a track record of using data to drive product growth, improve customer experience and enable strategic decision-making. Currently pursuing an MBA in Business Analytics to deepen domain expertise and take on larger product leadership roles.",
+ "education": [
+  { "institution": "WESTBRIDGE SCHOOL OF MANAGEMENT", "program": "MBA in Business Analytics", "details": ["Member, Analytics Club | Dean’s List, Term 1"], "dates": "2024–2026", "location": "Bengaluru" },
+  { "institution": "RAJASTHAN INSTITUTE OF TECHNOLOGY", "program": "B.E. in Computer Engineering | CGPA: 8.3/10", "details": [], "dates": "2020–2024", "location": "Jaipur" },
+  { "institution": "GREENFIELD SENIOR SECONDARY SCHOOL", "program": "CBSE Class XII | 95.2%", "details": [], "dates": "2020", "location": "Jaipur" }
+ ],
+ "experience": [
+  { "org": "NOVACART COMMERCE", "role": "Product Analyst", "dates": "Jul 2025–Present", "location": "Bengaluru", "groups": [ { "heading": "", "bullets": [
+   "Improved checkout conversion by 12% by analyzing user funnel drop-offs and running A/B tests",
+   "Analyzed 2.4M user events using SQL and Python to identify key drivers of repeat purchases",
+   "Built a pricing and promotions dashboard used by product and marketing teams for weekly decisions",
+   "Reduced support tickets by 18% by finding the top 5 issue categories with the product team",
+   "Partnered with engineering to launch a recommendations module, contributing to 8% increase in AOV" ] } ] }
+ ],
+ "internships": [
+  { "org": "BLUEPEAK CONSULTING", "role": "Business Analyst Intern", "dates": "Jan 2025–Jun 2025", "location": "Bengaluru", "groups": [ { "heading": "", "bullets": [
+   "Built interactive dashboards in Power BI to track project KPIs for 5+ client engagements",
+   "Conducted SQL-based analysis on 3 years of customer data to identify growth opportunities",
+   "Automated weekly reporting process using Python, reducing manual effort by 70%",
+   "Supported market research and competitive analysis for a new product launch in the BFSI sector" ] } ] }
+ ],
+ "projects": [
+  { "org": "SUBSCRIPTION CHURN PREDICTION", "role": "Team Lead | Academic Project", "dates": "Sep 2025–Nov 2025", "location": "", "groups": [ { "heading": "", "bullets": [
+   "Built a machine learning model to predict customer churn with 82% accuracy using Python",
+   "Analyzed behavior and transaction data of 50K+ users to identify key churn drivers",
+   "Developed an interactive dashboard to simulate retention strategies and estimate revenue impact" ] } ] },
+  { "org": "CAMPUS MARKETPLACE LAUNCH", "role": "Product Manager | Personal Project", "dates": "Jan 2024–Apr 2024", "location": "", "groups": [ { "heading": "", "bullets": [
+   "Led a team of 4 to build a campus marketplace connecting 1,000+ students to buy and sell items",
+   "Conducted user research, defined product requirements and designed the MVP",
+   "Achieved 500+ active users in the first 2 months through targeted marketing and college partnerships" ] } ] }
+ ],
+ "certifications": [
+  { "name": "SQL for Data Analysis", "issuer": "Online Course Platform", "dates": "2023" },
+  { "name": "Google Analytics (GA4) Certification", "issuer": "Online Course Platform", "dates": "2023" },
+  { "name": "Product Management Foundations", "issuer": "Online Course Platform", "dates": "2022" }
+ ],
+ "achievements": [
+  "Secured Top 5 position out of 120 teams in the National Product Case Competition 2024",
+  "Awarded Merit Scholarship for academic excellence (top 5% of batch) during undergraduate studies",
+  "Recipient of the “Best Analytics Project” award at college tech fest 2023"
+ ],
+ "leadership": [
+  { "org": "Analytics Club, Westbridge School of Management", "role": "Core Member", "dates": "Aug 2024–Present", "location": "Bengaluru", "groups": [ { "heading": "", "bullets": [
+   "Organize guest lectures, workshops and case sessions on data analytics and product management",
+   "Led a 3-member team to conduct an inter-college analytics hackathon with 200+ participants",
+   "Manage the club’s newsletter featuring industry trends, tool tutorials and member projects" ] } ] }
+ ],
+ "skills": {}
+}

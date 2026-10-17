@@ -14,7 +14,7 @@ const out = 'tests/out/ui-', errors = [];
 for (const [tag, vp] of [['d', { width: 1440, height: 900 }], ['m', { width: 390, height: 844 }]]) {
   const pg = await (await b.newContext({ viewport: vp })).newPage();
   pg.on('pageerror', (e) => errors.push(tag + ' ' + e.message)); pg.on('console', (m) => m.type() === 'error' && errors.push(tag + ' ' + m.text()));
-  await pg.route('https://fonts.googleapis.com/**', (r) => r.fulfill({ contentType: 'text/css', body: fs.readFileSync('/tmp/geist.css', 'utf8') }));
+  await pg.route('https://fonts.googleapis.com/**', (r) => r.fulfill({ contentType: 'text/css', body: fs.readFileSync('tests/stubs/carlito.css', 'utf8').replaceAll('url("/', `url("http://localhost:${port}/`) }));
   await pg.route('https://cdn.jsdelivr.net/npm/@supabase/**', (r) => r.fulfill({ contentType: 'text/javascript', body: fs.readFileSync('tests/stubs/supabase-stub.js', 'utf8') }));
   for (const [u, f] of Object.entries(libs)) await pg.route(u, (r) => r.fulfill({ contentType: 'text/javascript', body: fs.readFileSync(f, 'utf8') }));
   await pg.addInitScript(([f]) => { window.__FIXTURES__ = f; window.__STUB__ = { signedOut: true }; }, [fixtures]);

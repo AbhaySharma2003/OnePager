@@ -1,94 +1,132 @@
 /* OnePager design system: shared by the landing page and the app.
-   Clean, bright SaaS base. The one signature: the highlighter yellow of the template's section labels,
-   used sparingly to mark "this is where you are / what matters". */
+   The look of a professional one-page resume: white paper, black ruled grid, bold section labels,
+   Calibri-style type (Carlito), blue underlined links. No highlighter, no rounded pills. */
 :root {
-  --canvas: #F7F8FA;
+  --canvas: #F4F4F1;
   --surface: #FFFFFF;
-  --sunken: #F1F3F6;
-  --ink: #161A23;
-  --ink-2: #3A4150;
-  --muted: #646C7C;
-  --line: #E3E6EC;
-  --line-2: #D3D8E0;
-  --brand: #2F54EB;
-  --brand-ink: #1E3DC4;
-  --brand-soft: #EDF1FE;
-  --marker: #FFE94D;
-  --good: #0E8A5F;
-  --good-soft: #E5F5EE;
-  --warn: #9A6400;
-  --warn-soft: #FFF5DB;
-  --bad: #D33A2C;
-  --bad-soft: #FDECEA;
-  --font: "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  --r-sm: 8px;
-  --r-md: 12px;
-  --r-lg: 18px;
-  --shadow-pop: 0 1px 2px rgba(22, 26, 35, .06), 0 12px 32px -12px rgba(22, 26, 35, .22);
-  --shadow-paper: 0 2px 4px rgba(22, 26, 35, .06), 0 24px 60px -24px rgba(22, 26, 35, .35);
+  --sunken: #F4F4F1;
+  --ink: #111111;
+  --ink-2: #2E2E2E;
+  --muted: #5D5D5A;
+  --line: #111111;      /* the grid: every rule is black */
+  --line-2: #111111;
+  --hair: #D9D9D4;      /* soft dividers inside a cell */
+  --brand: #1155CC;     /* the resume's link blue */
+  --brand-ink: #0B3E99;
+  --brand-soft: #EEF3FC;
+  --marker: #111111;
+  --good: #0B7A50;
+  --good-soft: #E6F3EC;
+  --warn: #8A5A00;
+  --warn-soft: #FFF4D9;
+  --bad: #C2311F;
+  --bad-soft: #FCEBE8;
+  --font: "Carlito", Calibri, "Segoe UI", ui-sans-serif, system-ui, sans-serif;
+  --rule: 1.5px;
+  --r-sm: 2px;
+  --r-md: 0px;
+  --r-lg: 0px;
+  --shadow-pop: 0 1px 0 rgba(0, 0, 0, .04), 0 10px 28px -18px rgba(0, 0, 0, .35);
+  --shadow-paper: 0 1px 2px rgba(0, 0, 0, .08), 0 22px 50px -26px rgba(0, 0, 0, .4);
   color-scheme: light;
 }
 *, *::before, *::after { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; }
 html, body { margin: 0; }
-body { background: var(--canvas); color: var(--ink); font: 400 15px/1.6 var(--font); -webkit-font-smoothing: antialiased; }
+body { background: var(--canvas); color: var(--ink); font: 400 16px/1.5 var(--font); -webkit-font-smoothing: antialiased; }
 a { color: inherit; }
 img, svg { display: block; max-width: 100%; }
 button, input, select, textarea { font: inherit; color: inherit; }
-h1, h2, h3, h4 { margin: 0; line-height: 1.15; letter-spacing: -0.02em; font-weight: 650; text-wrap: balance; }
+h1, h2, h3, h4 { margin: 0; line-height: 1.12; letter-spacing: -0.01em; font-weight: 700; text-wrap: balance; }
 p { margin: 0; }
 [hidden] { display: none !important; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
 /* focus: always visible for keyboard users */
-:focus-visible { outline: 2.5px solid var(--brand); outline-offset: 2px; border-radius: 6px; }
+:focus-visible { outline: 2.5px solid var(--brand); outline-offset: 2px; }
 
 /* buttons */
 .btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-  min-height: 42px; padding: 0 18px; border-radius: var(--r-sm); border: 1px solid transparent;
-  background: var(--brand); color: #fff; font-weight: 550; font-size: 15px; text-decoration: none;
+  min-height: 42px; padding: 0 18px; border-radius: var(--r-sm); border: var(--rule) solid var(--ink);
+  background: var(--ink); color: #fff; font-weight: 700; font-size: 16px; text-decoration: none;
   cursor: pointer; white-space: nowrap; transition: background .15s, border-color .15s, box-shadow .15s;
 }
-.btn:hover { background: var(--brand-ink); }
+.btn:hover { background: #333; border-color: #333; }
 .btn:disabled { opacity: .55; cursor: not-allowed; }
-.btn.lg { min-height: 50px; padding: 0 24px; font-size: 16px; border-radius: 10px; }
-.btn.sm { min-height: 34px; padding: 0 12px; font-size: 14px; }
-.btn.ghost, .btn.secondary { background: var(--surface); color: var(--ink); border-color: var(--line-2); }
-.btn.ghost:hover, .btn.secondary:hover { border-color: var(--ink-2); background: var(--surface); }
+.btn.lg { min-height: 50px; padding: 0 24px; font-size: 17px; }
+.btn.sm { min-height: 34px; padding: 0 12px; font-size: 15px; }
+.btn.ghost, .btn.secondary { background: var(--surface); color: var(--ink); border-color: var(--ink); }
+.btn.ghost:hover, .btn.secondary:hover { background: var(--sunken); border-color: var(--ink); }
 .btn.dark { background: var(--ink); }
 .btn.dark:hover { background: #000; }
-.btn.good, .btn.pay { background: var(--good); }
-.btn.good:hover, .btn.pay:hover { background: #0B7350; }
+.btn.good, .btn.pay { background: var(--good); border-color: var(--good); }
+.btn.good:hover, .btn.pay:hover { background: #075E3D; border-color: #075E3D; }
 .btn svg { width: 18px; height: 18px; flex: none; }
-.link { background: none; border: 0; padding: 0; color: var(--muted); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; font-size: 14px; }
-.link:hover { color: var(--ink); }
+.link { background: none; border: 0; padding: 0; color: var(--brand); text-decoration: underline; text-underline-offset: 2px; cursor: pointer; font-size: 15px; }
+.link:hover { color: var(--brand-ink); }
 .link.danger { color: var(--bad); }
 
 /* form controls */
 .input, .fld input, .fld select, .fld textarea {
-  width: 100%; min-height: 42px; padding: 9px 12px; border: 1px solid var(--line-2); border-radius: var(--r-sm);
-  background: var(--surface); font-size: 15px; transition: border-color .15s, box-shadow .15s;
+  width: 100%; min-height: 42px; padding: 9px 12px; border: 1px solid #8C8C88; border-radius: var(--r-sm);
+  background: var(--surface); font-size: 16px; transition: border-color .15s, box-shadow .15s;
 }
 .fld textarea, textarea.input { min-height: 0; resize: vertical; line-height: 1.5; }
-.input:hover, .fld input:hover, .fld select:hover, .fld textarea:hover { border-color: #B9C0CC; }
-.input:focus, .fld input:focus, .fld select:focus, .fld textarea:focus { outline: none; border-color: var(--brand); box-shadow: 0 0 0 3px var(--brand-soft); }
-.fld { display: grid; gap: 6px; font-size: 14px; }
-.fld > span { color: var(--ink-2); font-weight: 500; }
+.input:hover, .fld input:hover, .fld select:hover, .fld textarea:hover { border-color: var(--ink); }
+.input:focus, .fld input:focus, .fld select:focus, .fld textarea:focus { outline: none; border-color: var(--ink); box-shadow: 0 0 0 3px var(--brand-soft); }
+.fld { display: grid; gap: 6px; font-size: 15px; }
+.fld > span { color: var(--ink); font-weight: 700; }
 .fld > span small { color: var(--muted); font-weight: 400; }
 
-/* the marker: highlighter stroke behind text, like the template's yellow labels */
-.mark { background: linear-gradient(transparent 58%, var(--marker) 58%, var(--marker) 92%, transparent 92%); padding: 0 .08em; }
+/* emphasis: bold with a ruled underline (the professional resume has no highlighter) */
+.mark { font-weight: 700; text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 3px; }
 
 /* chips */
-.chip { display: inline-flex; align-items: center; gap: 6px; min-height: 30px; padding: 0 12px; border-radius: 999px; border: 1px solid var(--line-2); background: var(--surface); font-size: 13.5px; font-weight: 500; color: var(--ink-2); }
-.chip.good { border-color: transparent; background: var(--good-soft); color: var(--good); }
-.chip.warn { border-color: transparent; background: var(--warn-soft); color: var(--warn); }
-.chip.bad { border-color: transparent; background: var(--bad-soft); color: var(--bad); }
+.chip { display: inline-flex; align-items: center; gap: 6px; min-height: 28px; padding: 0 10px; border-radius: var(--r-sm); border: 1px solid var(--ink); background: var(--surface); font-size: 14px; font-weight: 700; color: var(--ink); }
+.chip.good { border-color: var(--good); background: var(--good-soft); color: var(--good); }
+.chip.warn { border-color: var(--warn); background: var(--warn-soft); color: var(--warn); }
+.chip.bad { border-color: var(--bad); background: var(--bad-soft); color: var(--bad); }
 
 /* toast */
 .toast { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); z-index: 80; max-width: min(560px, calc(100vw - 32px));
-  background: var(--ink); color: #fff; padding: 12px 16px; border-radius: 10px; font-size: 14.5px; box-shadow: var(--shadow-pop); animation: toast-in .2s ease-out; }
+  background: var(--ink); color: #fff; padding: 12px 16px; border-radius: var(--r-sm); font-size: 15.5px; box-shadow: var(--shadow-pop); animation: toast-in .2s ease-out; }
 .toast.err { background: #7A1F17; }
 @keyframes toast-in { from { opacity: 0; transform: translate(-50%, 8px); } }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; } }
+
+/* ---- the resume grid, as a UI component ----------------------------------------------------
+   <div class="sheet">
+     <div class="grp"><div class="lab">Label</div><div class="rows">
+       <div class="row"><div class="body">…</div><div class="meta">…</div></div> …
+     </div></div> …
+   </div> */
+.sheet { --c1: 190px; --c3: 160px; background: var(--surface); border: var(--rule) solid var(--ink); }
+.grp { display: grid; grid-template-columns: var(--c1) minmax(0, 1fr); scroll-margin-top: 84px; }
+.grp + .grp { border-top: var(--rule) solid var(--ink); }
+.lab { padding: 16px 18px; font-weight: 700; font-size: 17px; line-height: 1.25; border-right: var(--rule) solid var(--ink); }
+.row { display: grid; grid-template-columns: minmax(0, 1fr) var(--c3); }
+.row.wide { grid-template-columns: minmax(0, 1fr); }
+.row + .row { border-top: var(--rule) solid var(--ink); }
+.body { padding: 16px 20px; min-width: 0; }
+.meta { padding: 16px 16px; border-left: var(--rule) solid var(--ink); font-size: 15px; color: var(--ink-2); }
+.meta b { display: block; color: var(--ink); }
+.org { font-weight: 700; text-transform: uppercase; letter-spacing: .01em; }
+.role { font-weight: 700; font-style: italic; }
+.bul { list-style: none; margin: 6px 0 0; padding: 0; }
+.bul li { position: relative; padding-left: 16px; }
+.bul li + li { margin-top: 2px; }
+.bul li::before { content: "\2022"; position: absolute; left: 3px; }
+.doc-head { text-align: center; padding: 6px 0 22px; }
+.doc-name { font-weight: 700; text-transform: uppercase; font-size: 22px; letter-spacing: .02em; }
+.doc-contact { margin-top: 4px; font-size: 16px; }
+.doc-contact a { color: var(--brand); text-underline-offset: 2px; }
+.doc-contact .sep { margin: 0 8px; color: var(--ink); }
+@media (max-width: 720px) {
+  .grp { grid-template-columns: minmax(0, 1fr); }
+  .lab { border-right: 0; border-bottom: var(--rule) solid var(--ink); background: var(--sunken); padding: 10px 14px; }
+  .row { grid-template-columns: minmax(0, 1fr); }
+  .meta { border-left: 0; border-top: 1px dashed var(--hair); padding: 10px 14px; font-size: 14px; }
+  .meta b { display: inline; margin-right: 6px; }
+  .body { padding: 14px; }
+}
