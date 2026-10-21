@@ -149,7 +149,7 @@ footer a { color: var(--brand); }
           <a class="btn lg ghost" href="#how">See how it works</a>
         </div>
         <p class="price-note" data-pay="beta"><strong>Free while in beta.</strong> Sign in with your email to start.</p>
-        <p class="price-note" data-pay="live" hidden><strong>Your first one-pager is free.</strong> After that, ₹<span class="price">49</span> each.</p>
+        <p class="price-note" data-pay="live" hidden><strong>Your first one-pager is free.</strong> After that, <span class="price">$0.90</span> each.</p>
       </div>
       <img class="static-img" src="assets/paper-resume.jpg" alt="An example one-page resume made with OnePager" loading="lazy">
 
@@ -253,7 +253,7 @@ footer a { color: var(--brand); }
           <div class="row">
             <div class="body"><div class="org">Every one-pager after that</div><div class="role">See it's ready before you pay</div>
               <ul class="bul"><li>A new one-pager for another domain, role or JD</li><li>PDF and Word download, up to 3 rewrites each</li></ul></div>
-            <div class="meta"><b>₹<span class="price">49</span></b>each</div>
+            <div class="meta"><b class="price">$0.90</b>each</div>
           </div>
         </div>
       </section>
@@ -265,7 +265,7 @@ footer a { color: var(--brand); }
           <div class="row wide"><div class="body"><details><summary>Does it follow a one-page template exactly?</summary><p>Yes. It uses a classic one-page resume grid and a strict checklist: gridlines, bold section labels, RAC bullets, Class X / XII and the score rules.</p></details></div></div>
           <div class="row wide"><div class="body"><details><summary>What can I upload?</summary><p>A PDF or Word CV, or a Master CV Excel. If you don't have a CV, fill the Master CV form instead.</p></details></div></div>
           <div class="row wide"><div class="body"><details><summary>Can I edit the result?</summary><p>Yes. Edit any line on the page, rewrite the whole one-pager, or download the Word file and change it yourself.</p></details></div></div>
-          <div class="row wide" data-pay="live" hidden><div class="body"><details><summary>How does payment work?</summary><p>Your first one-pager is free. For each one after that, you go through the whole process for free and pay ₹<span class="price">49</span> only once it's ready, to see and download it.</p></details></div></div>
+          <div class="row wide" data-pay="live" hidden><div class="body"><details><summary>How does payment work?</summary><p>Your first one-pager is free. For each one after that, you go through the whole process for free and pay <span class="price">$0.90</span> only once it's ready, to see and download it.</p></details></div></div>
           <div class="row wide"><div class="body"><details><summary>Who can see my CV?</summary><p>Only you. Your Master CV and one-pagers are saved privately to your account.</p></details></div></div>
         </div>
       </section>
@@ -286,11 +286,13 @@ footer a { color: var(--brand); }
 <footer class="wrap">OnePager<span class="sep"> | </span>© 2026<span class="sep"> | </span><a href="app.html">Sign in</a></footer>
 
 <script type="module">
-import { PAYMENTS_LIVE, PRICE_INR } from "./config.js";
+import { loadSettings } from "./app/settings.js";
 
-// Pricing copy appears only once payments are live.
-for (const el of document.querySelectorAll("[data-pay]")) el.hidden = (el.dataset.pay === "live") !== PAYMENTS_LIVE;
-for (const el of document.querySelectorAll("span.price")) el.textContent = PRICE_INR;
+// Pricing copy appears only once payments are live (the server says so; see app/settings.js).
+loadSettings().then((S) => {
+  for (const el of document.querySelectorAll("[data-pay]")) el.hidden = (el.dataset.pay === "live") !== S.paymentsLive;
+  for (const el of document.querySelectorAll(".price")) el.textContent = S.price;
+});
 
 // The story: scroll position (0..1 through the tall section) drives the paper and the captions.
 const story = document.getElementById("story"), stage = document.getElementById("stage");

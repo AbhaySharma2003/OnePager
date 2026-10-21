@@ -111,7 +111,7 @@
         <button class="btn ghost" id="regen" type="button">Rewrite</button>
         <button class="btn" id="dl-pdf" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11"/><path d="M7 10l5 5 5-5"/><path d="M5 20h14"/></svg>PDF</button>
         <button class="btn dark" id="dl-docx" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11"/><path d="M7 10l5 5 5-5"/><path d="M5 20h14"/></svg>Word</button>
-        <button class="btn pay" id="pay-top" type="button" hidden><span>Pay ₹<span class="price">49</span> to unlock</span></button>
+        <button class="btn pay" id="pay-top" type="button" hidden><span>Pay <span class="price">$0.90</span> to unlock</span></button>
       </div>
     </div>
     <div class="work">
@@ -121,8 +121,8 @@
           <div class="paywall-card" role="dialog" aria-labelledby="pw-h">
             <span class="lock" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span>
             <h2 id="pw-h">Your one-pager is ready</h2>
-            <p>To see your one-pager and download it as PDF or Word, pay <b>₹<span class="price">49</span></b>.</p>
-            <button class="btn pay lg" id="pay" type="button"><span>Pay ₹<span class="price">49</span> to unlock</span></button>
+            <p>To see your one-pager and download it as PDF or Word, pay <b class="price">$0.90</b>.</p>
+            <button class="btn pay lg" id="pay" type="button"><span>Pay <span class="price">$0.90</span> to unlock</span></button>
             <p class="hint" id="pay-msg">One-time payment for this one-pager · Secure checkout by Dodo Payments</p>
           </div>
         </div>
@@ -163,6 +163,18 @@
     <button class="btn lg" id="verify-code" type="button">Sign in</button>
   </div>
   <p id="auth-msg" class="hint" role="status"></p>
+</div></div>
+
+<div class="overlay" id="paynote" hidden><div class="dialog paynote" role="dialog" aria-modal="true" aria-labelledby="pn-h">
+  <span class="pn-tag">Free one-pager used</span>
+  <h2 id="pn-h">Your next one-pager is <span class="price">$0.90</span></h2>
+  <p>You've already used your free one-pager. To use OnePager again, each new one-pager costs <b class="price">$0.90</b>.</p>
+  <ul class="bul">
+    <li>We still write it, fit it to one page and check it first</li>
+    <li>You pay only once it's ready, to see it and download it as PDF or Word</li>
+    <li>Each paid one-pager includes up to 3 rewrites</li>
+  </ul>
+  <div class="pn-actions"><button class="btn ghost lg" id="pn-cancel" type="button">Not now</button><button class="btn lg" id="pn-go" type="button">Continue</button></div>
 </div></div>
 
 <div class="overlay" id="busy" hidden><div class="dialog busy-card" aria-live="polite">

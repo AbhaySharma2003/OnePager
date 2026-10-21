@@ -35,7 +35,7 @@ function q(table) {
 
 const scramble = (v) => typeof v === "string" ? v.replace(/[a-z]/g, "x").replace(/[A-Z]/g, "X").replace(/[0-9]/g, "0")
   : Array.isArray(v) ? v.map(scramble) : v && typeof v === "object" ? Object.fromEntries(Object.entries(v).map(([k, x]) => [k, scramble(x)])) : v;
-const view = (r) => ({ id: r.id, status: r.status, domain: r.domain, role: r.target_role || "", price: 49, resume: r.status === "locked" ? scramble(r.data) : r.data, flags: [] });
+const view = (r) => ({ id: r.id, status: r.status, domain: r.domain, role: r.target_role || "", price: "$0.90", resume: r.status === "locked" ? scramble(r.data) : r.data, flags: [] });
 
 const server = {
   extract: () => { db.master_cvs = [{ user_id: user.id, data: fixtures.extract.master, source: "upload", updated_at: new Date().toISOString() }]; return fixtures.extract; },

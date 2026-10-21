@@ -287,3 +287,12 @@ h1 { font-size: clamp(32px, 3.8vw, 44px); letter-spacing: -0.015em; }
 .progress li.now::before { border-color: #DADAD5; border-top-color: var(--ink); }
 #busy-s { border-top: 1px solid var(--ink); }
 .busy-foot { font-size: 14px; }
+
+/* paid-run notice (after the free one-pager) */
+.dialog.paynote { width: min(480px, 100%); }
+.paynote .pn-tag { justify-self: start; border: var(--rule) solid var(--ink); padding: 2px 10px; font-size: 14px; font-weight: 700; }
+.paynote h2 { font-size: 26px; }
+.paynote p { color: var(--ink-2); font-size: 16.5px; }
+.paynote .bul { font-size: 15.5px; color: var(--ink-2); }
+.paynote .pn-actions { display: flex; gap: 10px; margin-top: 6px; }
+.paynote .pn-actions .btn { flex: 1; width: auto; }

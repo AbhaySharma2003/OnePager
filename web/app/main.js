@@ -10,13 +10,15 @@ import { validate, checkFacts } from "../resume/validate.js";
 import { downloadPdf, saveBlob } from "../resume/export-pdf.js";
 import { buildDocxBlob } from "../resume/export-docx.js";
 import { autoFit, needsWork } from "./fit-loop.js";
-import { PRICE_INR, PAYMENTS_LIVE, GOOGLE_SIGNIN } from "../config.js";
+import { GOOGLE_SIGNIN } from "../config.js";
+import { loadSettings } from "./settings.js";
 
 const $ = (s) => document.querySelector(s);
 const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
-const state = { master: null, source: null, resume: null, resumeId: null, flags: [], fit: null, status: "free", price: PRICE_INR, domain: "General", role: "", jd: "" };
+const S = await loadSettings(); // { paymentsLive, price }
+const state = { master: null, source: null, resume: null, resumeId: null, flags: [], fit: null, status: "free", price: S.price, domain: "General", role: "", jd: "" };
 const isLocked = () => state.status === "locked";
-document.querySelectorAll(".price").forEach((el) => (el.textContent = PRICE_INR));
+document.querySelectorAll(".price").forEach((el) => (el.textContent = S.price));
 
 // ---------- helpers ----------
 function toast(msg, err = false) {
@@ -59,7 +61,7 @@ async function requireUser() {
 }
 $("#google").onclick = () => signInWithGoogle().catch((e) => ($("#auth-msg").textContent = e.message));
 const authError = (e) => /rate limit|too many/i.test(e.message)
-  ? "Too many sign-in emails were sent recently. Use Continue with Google, or try again in a few minutes."
+  ? (GOOGLE_SIGNIN ? "Too many sign-in emails were sent recently. Use Continue with Google, or try again in a few minutes." : "Too many sign-in emails were sent recently. Please try again in a few minutes.")
   : e.message;
 $("#send-link").onclick = async () => {
   const email = $("#email").value.trim();
@@ -128,6 +130,7 @@ wireDrop("#drop-cv", "#file-cv");
 async function fromUpload(file) {
   readTarget();
   await requireUser();
+  if (!(await confirmPaidRun())) return;
   const steps = ["Reading your CV", "Structuring it into your Master CV", "Writing your one-pager", "Fitting it to one page"];
   busy.start("Building your one-pager", steps);
   try {
@@ -149,7 +152,7 @@ async function paintSaved() {
   const [m, list] = await Promise.all([loadMaster(), listResumes()]);
   const items = [];
   if (m?.data && Object.keys(m.data).length) items.push(`<li><span><b>Master CV</b> · saved ${new Date(m.updated_at).toLocaleDateString("en-IN", { day: "numeric", month: "short" })}</span><span style="display:flex;gap:8px"><button class="btn secondary" data-edit-master type="button">Edit</button><button class="btn" data-use-master type="button">Create one-pager from it</button></span></li>`);
-  const pill = (st) => !PAYMENTS_LIVE ? "" : st === "locked" ? `<span class="pill mid">Locked · ₹${PRICE_INR}</span>` : st === "paid" ? `<span class="pill ok">Paid</span>` : `<span class="pill ok">Free</span>`;
+  const pill = (st) => !S.paymentsLive ? "" : st === "locked" ? `<span class="pill mid">Locked · ${S.price}</span>` : st === "paid" ? `<span class="pill ok">Paid</span>` : `<span class="pill ok">Free</span>`;
   for (const r of list) items.push(`<li><span><b>${esc(r.domain === "General" ? "General" : domainLabel(r.domain))} one-pager</b>${r.target_role ? " · " + esc(r.target_role) : ""} · ${new Date(r.created_at).toLocaleDateString("en-IN", { day: "numeric", month: "short" })}${pill(r.status)}</span><button class="btn secondary" data-open-resume="${r.id}" type="button">${r.status === "locked" ? "View &amp; unlock" : "Open"}</button></li>`);
   paintOffer(list);
   $("#saved").hidden = !items.length; $("#saved-list").innerHTML = items.join("");
@@ -165,19 +168,39 @@ async function paintSaved() {
 }
 
 // Free-first notice: the server decides, this only tells the student what to expect.
+// The server keeps one 'free' one-pager per student; everything after it is paid.
+function usedFreeIn(list) { return (list || []).some((r) => r.status === "free"); }
 function paintOffer(list) {
-  const usedFree = (list || []).some((r) => r.status !== "locked");
+  const usedFree = usedFreeIn(list);
   const el = $("#offer");
-  el.hidden = !PAYMENTS_LIVE;
+  el.hidden = !S.paymentsLive;
   el.classList.toggle("paid", usedFree);
   el.innerHTML = usedFree
-    ? `<b>₹${PRICE_INR}</b> <span>You've used your free one-pager. Each new one-pager is ₹${PRICE_INR}, paid only after you see it's ready.</span>`
+    ? `<b>${esc(S.price)}</b> <span>You've used your free one-pager. Each new one-pager is ${esc(S.price)}, paid only after you see it's ready.</span>`
     : `<b>FREE</b> <span>Your first one-page resume is free.</span>`;
+}
+// Popup before a paid run: shown when payments are on and this student's free one-pager is used.
+async function confirmPaidRun() {
+  if (!S.paymentsLive) return true;
+  let list = [];
+  try { list = await listResumes(); } catch { return true; }
+  if (!usedFreeIn(list)) return true;
+  track("paid_notice_shown");
+  const box = $("#paynote");
+  box.hidden = false; $("#pn-go").focus();
+  return new Promise((resolve) => {
+    const done = (ok) => { box.hidden = true; document.removeEventListener("keydown", onKey); track(ok ? "paid_notice_continue" : "paid_notice_cancel"); resolve(ok); };
+    const onKey = (e) => { if (e.key === "Escape") done(false); };
+    document.addEventListener("keydown", onKey);
+    $("#pn-go").onclick = () => done(true);
+    $("#pn-cancel").onclick = () => done(false);
+    box.onclick = (e) => { if (e.target === box) done(false); };
+  });
 }
 // Apply a one-pager as returned by the server (scrambled when locked).
 function useView(v) {
   state.resume = v.resume; state.flags = v.flags || []; state.resumeId = v.id; state.status = v.status;
-  state.domain = v.domain || state.domain; state.role = v.role ?? state.role; state.price = v.price || PRICE_INR;
+  state.domain = v.domain || state.domain; state.role = v.role ?? state.role; state.price = v.price || S.price;
 }
 
 // ---------- 2. Master CV form ----------
@@ -198,6 +221,7 @@ $("#create").onclick = async () => {
   if (!(m.education || []).length) { toast("Add at least one education entry.", true); return; }
   state.master = m;
   clearTimeout(saveTimer);
+  if (!(await confirmPaidRun())) return;
   busy.start("Building your one-pager", ["Saving your Master CV", "Writing your one-pager", "Fitting it to one page"]);
   try {
     busy.step(0);
@@ -211,6 +235,7 @@ $("#create").onclick = async () => {
 // From an already-saved Master CV
 async function fromStored(rewriteId) {
   await requireUser();
+  if (!rewriteId && !(await confirmPaidRun())) return;
   busy.start(rewriteId ? "Rewriting your one-pager" : "Building your one-pager", ["Writing your one-pager", "Fitting it to one page"]);
   try { await writeOnePager(0, rewriteId); } catch (e) { toast(e.message, true); } finally { busy.stop(); }
 }
@@ -235,7 +260,7 @@ async function writeOnePager(stepIdx, rewriteId) {
 // Fit an unlocked one-pager to the page (AI tightens lines), then save it.
 async function fitAndSave(stepIdx) {
   busy.step(stepIdx, "Measuring every line and tightening bullets that spill over.");
-  const res = await autoFit({ id: state.resumeId, resume: state.resume, domain: state.domain, header: headerFromMaster(state.master), container: $("#paper"), rounds: 2,
+  const res = await autoFit({ id: state.resumeId, resume: state.resume, domain: state.domain, header: headerFromMaster(state.master), container: $("#paper"), rounds: 3,
     onStep: (i) => busy.step(stepIdx, `Pass ${i}: tightening lines that don't fit`) });
   state.resume = res.resume; state.fit = res.fit;
   await saveResume({ id: state.resumeId, data: state.resume, flags: state.flags }).catch(() => {});
@@ -276,7 +301,7 @@ function paintChecks() {
   $("#fit-card").innerHTML = `<h3>Page fit</h3>
     <div class="stat"><span class="pill ${f.fits ? "ok" : "bad"}">${f.fits ? "1 page" : `${Math.ceil(f.overflowPt / 9.9)} lines over`}</span>
     <span class="pill ${wraps ? "bad" : "ok"}">${wraps} spill over</span><span class="pill ${shorts ? "mid" : "ok"}">${shorts} short</span>
-    <span class="pill ${f.freeLines > 3 ? "mid" : "ok"}">${Math.max(0, f.freeLines)} free lines</span></div>
+    <span class="pill ${f.freeLines > 2 ? "mid" : "ok"}">${Math.max(0, f.freeLines)} free lines</span></div>
     ${needsWork(f) ? `<p class="hint" style="margin:8px 0 0">Red lines spill onto a 2nd line; amber ones leave the line half empty.</p><button class="btn secondary" id="refit" type="button" style="margin-top:8px">Auto-fix fit</button>` : `<p class="hint" style="margin:8px 0 0">Every bullet fills exactly one line.</p>`}`;
   $("#refit")?.addEventListener("click", refit);
   const issues = [...validate(fullResume()), ...checkFacts(state.resume, state.master)];
@@ -294,7 +319,7 @@ async function refit() {
   busy.start("Fitting it to one page", ["Tightening lines that don't fit"]);
   try {
     busy.step(0);
-    const res = await autoFit({ id: state.resumeId, resume: state.resume, domain: state.domain, header: headerFromMaster(state.master), container: $("#paper"), rounds: 2 });
+    const res = await autoFit({ id: state.resumeId, resume: state.resume, domain: state.domain, header: headerFromMaster(state.master), container: $("#paper"), rounds: 3 });
     state.resume = res.resume; await saveResume({ id: state.resumeId, data: state.resume, flags: state.flags }); paint(); paintEditor();
     if (res.error) toast(/busy/i.test(res.error.message) ? "The AI is still busy. Try Auto-fix fit again in a minute, or edit the red lines yourself." : res.error.message, true);
   } catch (e) { toast(e.message, true); } finally { busy.stop(); }
@@ -333,7 +358,9 @@ function openResume_() {
   show("resume");
   const locked = isLocked();
   const what = `${state.domain === "General" ? "General" : domainLabel(state.domain)} one-pager${state.role ? " for " + state.role : ""}`;
-  $("#r-sub").textContent = locked ? `${what}. Written, fitted and checked. Unlock it to see and download it.` : `${what}. Review the checks, then download.`;
+  $("#r-sub").textContent = locked ? `${what}. Written, fitted and checked. Unlock it to see and download it.`
+    : state.status === "free" && S.paymentsLive ? `${what}. This one is free. Each new one-pager after it is ${S.price}.`
+    : `${what}. Review the checks, then download.`;
   $("#paper-wrap").classList.toggle("locked", locked);
   $("#paywall").hidden = !locked;
   $("#lock-card").hidden = !locked;

@@ -10,7 +10,8 @@
 // Paywall: a student's first one-pager is 'free'; later ones are 'locked' until paid. A locked one-pager never
 // leaves the server in readable form: the browser gets a scrambled copy to show blurred behind the pay button.
 import { createClient } from "npm:@supabase/supabase-js@2.58.0";
-import { dodo, recordPayment } from "./dodo.ts";
+import { dodo, payMode, recordPayment } from "./dodo.ts";
+import { mergeMaster, missedLines, refineInput, unsupported } from "./facts.ts";
 
 const CORS = {
   "Access-Control-Allow-Origin": "*",
@@ -60,14 +61,14 @@ const fill = (tpl: string, c: Cfg) =>
     .replaceAll("{{MASTER_GUIDELINES}}", c.master_guidelines ?? "")
     .replaceAll("{{SECTION_ORDER}}", (c.section_order ?? []).join(" > "));
 
-async function gemini(c: Cfg, task: "extract" | "generate" | "refine", system: string, user: string, responseSchema: unknown) {
+async function gemini(c: Cfg, task: "extract" | "generate" | "refine", system: string, user: string, responseSchema: unknown, maxS = Infinity) {
   const m = c.models?.[task] ?? { model: "gemini-flash-latest", temperature: 0.4, thinking: "low" };
   // Try the primary model, then fallbacks (free-tier models return 503/429 under load).
   const chain: string[] = [m.model, ...(m.fallbacks ?? c.models?.fallbacks ?? [])].filter(Boolean);
   const generationConfig: Cfg = { temperature: m.temperature ?? 0.4, responseMimeType: "application/json", responseSchema };
   if (m.thinking) generationConfig.thinkingConfig = { thinkingLevel: m.thinking };
   const body = JSON.stringify({ systemInstruction: { parts: [{ text: system }] }, contents: [{ role: "user", parts: [{ text: user }] }], generationConfig });
-  const deadline = Date.now() + (m.timeout_s ?? 120) * 1000;
+  const deadline = Date.now() + Math.min(m.timeout_s ?? 120, maxS) * 1000;
   let lastErr = "";
   // Free-tier Gemini often answers 503 "high demand" for a few seconds. Go round the model chain up to 3 times,
   // pausing between rounds, until the deadline.
@@ -114,11 +115,42 @@ async function gemini(c: Cfg, task: "extract" | "generate" | "refine", system: s
   throw new Error(lastErr.includes("503") || lastErr.includes("429") ? "The AI is busy right now. Please try again in a minute." : lastErr);
 }
 
-// Default prompts ship with the code (source: data/prompts/*.md, embedded by scripts/embed-prompts.mjs).
-// app_config keys prompt_<task>_override replace them; prompt_<task>_addendum appends extra rules without a redeploy.
-const GENERATE_PROMPT = "You are a business-school career-services resume writer. From a student's Master CV you write the content of their ONE-PAGE resume in the classic one-page business-school template, targeted at one domain.\n\nFACT LOCK (most important rule, never break it):\n- Use ONLY facts present in the MASTER CV JSON. Every number, %, ₹ amount, date, month, year, city, company, title, tool, certification and score in your output must appear in the Master CV.\n- Do NOT invent or estimate: no made-up percentages (e.g. \"100% compliance\"), no guessed months or years, no guessed cities, no new job titles, no \"Remote\".\n- If a date, month or location is not in the Master CV, leave that field empty (\"\"). If only a year is known, use the year only (e.g. \"2023\").\n- Do not output contact details; leave header fields empty. The app fills them from the student's profile.\n- Certifications and online courses go ONLY in Certifications, never in Projects or Experience.\n\nHARD RULES (official SOP, follow every one):\n{{RULES}}\n\nHOW TO WRITE\n- Section order: {{SECTION_ORDER}}. Use an empty array for a section the student has nothing strong for.\n- Professional summary: 50-60 words, 3 lines, starts with a descriptor or action verb (never \"I\"), names the professional identity for the target domain, includes 2-3 quantified spikes taken from the Master CV. Plain sentences.\n- Every bullet: Result-Action-Context. Lead with the result, then the action, then the context. Strong past-tense action verbs (Spearheaded, Drove, Built, Led, Reduced, Increased, Launched, Negotiated...). No first person, no full stop at the end.\n- LENGTH (critical): one bullet = one printed line = 95-105 characters including spaces, counting the text without ** markers. Bold text is wider, so keep bold phrases short. Example of the right length and shape (format only; never reuse its facts):\n  \"Cut month-end reporting time by **40%** by automating 12 Excel trackers into one **Power BI** dashboard\"\n- Bold: mark 1-2 short phrases per bullet with **double asterisks** (numbers, results, domain keywords). Never bold more than 5 words in a bullet.\n- Sub-skill headings: only for a role with 4 or more bullets; then split them into 2 groups each with a short heading (plain text, no underscores or markdown). Otherwise leave heading empty.\n- Quantify only with numbers from the Master CV. If a bullet would be much stronger with a number the student did not give, write it without the number and add a flag asking for it.\n- Weave in domain keywords (listed below) naturally, only where truthful.\n- Experience/internship entries: org = company name in CAPS; org_description = short context only if stated in the Master CV; role = designation exactly as given; dates like Jul’22-Apr’24 (typographic apostrophe, no spaces) only from Master CV dates; location = city only if given.\n- Education: newest first. Institution names in CAPS, spelled exactly as the institution writes its own name. Programmes in full form (e.g. \"MBA in Finance\", \"B.Tech in Computer Science\"), never bare abbreviations. Separate facts with \" | \". Class X / XII in Roman numerals. Include CGPA/% only if at least 8.0/10 or 80%. Dates like 2025-Present or 2020-2024.\n- Projects: academic, live, freelance, research or college projects only, with role, actions and outcome.\n- Certifications: credible and relevant to the domain, max 3-4; name | issuing organisation; date only if given; usually no bullet.\n- Achievements: scholarships, ranks, exam scores, awards with scale (\"1 of 50\").\n- Leadership: positions of responsibility with team size/footfall/sponsorship. Extra-curricular: sports, cultural, public speaking with rank and level. Social Impact: volunteering/NGO work.\n- Skills: Business Skills and Technical Skills, 4-7 items each, only skills evidenced elsewhere in the resume, favouring the domain keywords.\n- PAGE BUDGET: fill ONE A4 page: about 66 printed lines including entry headers (org line, role line, sub-skill headings, education lines). Aim for 62-66 lines: if the student has enough material, use it (more bullets for the most relevant roles); prioritise relevance to the target domain and recency.\n- Spelling and grammar must be perfect. Indian English conventions (₹, lakh/crore).\n- flags: list every place where the student should add or confirm information (missing numbers, missing dates or locations, missing contact info). Be specific and short.\n";
+// Prompts live in app_config (prompt_generate, prompt_refine, prompt_extract; synced from data/prompts by
+// scripts/sync-config.mjs), so wording can be tuned without a redeploy.
+const genPrompt = (c: Cfg) => fill(String(c.prompt_generate_override ?? c.prompt_generate ?? ""), c) + (c.prompt_generate_addendum ? "\n" + c.prompt_generate_addendum : "");
+const refinePrompt = (c: Cfg) => fill(String(c.prompt_refine_override ?? c.prompt_refine ?? ""), c) + (c.prompt_refine_addendum ? "\n" + c.prompt_refine_addendum : "");
 
-const REFINE_PROMPT = "You fix fit problems in a one-page business-school resume (Calibri 9pt; one printed line holds about 100 characters of plain text, fewer when words are bold). You receive the resume JSON, the student's Master CV and a fit report measured on the real page renderer.\n\nFACT LOCK: use only facts from the Master CV. Never invent numbers, dates, places, titles or outcomes.\n\n- \"wraps\": the bullet spills onto a second line. Rewrite it to at most target_chars characters (plain text, not counting ** markers), keeping the key result, numbers and 1-2 short **bold** phrases. Cut filler words first.\n- \"short\": the bullet leaves the line half empty. Lengthen it to about target_chars characters using ONLY facts from the Master CV (context, scale, tools, outcome).\n- \"page_overflow\": remove the given number of lines by dropping the least relevant bullets for the target domain (weak certifications, minor activities first). Never remove education or contact details.\n- freeLines > 2: the page has empty space. Add up to (freeLines - 1) strong, relevant bullets from the Master CV to the most relevant roles, each 95-105 characters.\n- Change nothing else. Keep every SOP rule:\n{{RULES}}\n";
+// CV text -> Master CV. Extraction sometimes drops lines; any CV line whose numbers are missing from the result
+// gets one repair pass, so nothing the student wrote is lost before writing starts.
+async function extractMaster(c: Cfg, text: string) {
+  const sys = fill(c.prompt_extract, c), sch = schema(c.master_schema), cv = `CV TEXT:\n"""\n${text}\n"""`;
+  const t0 = Date.now();
+  const r = await gemini(c, "extract", sys, cv, sch);
+  const missed = missedLines(text, r.data);
+  if (!missed.length || Date.now() - t0 > 45_000) return r; // no time left for a second pass
+  console.log("extract repair:", missed.length, "lines");
+  try {
+    // Ask only for the missed facts (small, focused answer), then merge them in with code.
+    const r2 = await gemini(c, "extract", sys, `CV LINES MISSING FROM THE MASTER CV:\n${missed.map((l) => "- " + l).join("\n")}\n\nFor context, the full CV:\n${cv}\n\nReturn a Master CV JSON that contains ONLY the facts from the lines above, each under its section with the entry's identifying fields (company / organisation / title, position or designation, dates). Every other section is an empty array.`, sch, 110 - (Date.now() - t0) / 1000);
+    const merged = mergeMaster(r.data, r2.data);
+    if (missedLines(text, merged).length < missed.length) return { ...r, data: merged };
+  } catch (e) { console.warn("extract repair failed", e); }
+  return r;
+}
+
+// Fit fixes from the stored Master CV. If the answer carries numbers the Master CV doesn't have, one more pass
+// removes them before the student ever sees them.
+async function refineChecked(c: Cfg, domain: string, problems: unknown, freeLines: unknown, resume: unknown, master: unknown) {
+  const t0 = Date.now();
+  const r = await gemini(c, "refine", refinePrompt(c), refineInput(domain, problems, freeLines, resume, master), schema(c.onepager_schema));
+  if (!unsupported(r.data, master).length || Date.now() - t0 > 45_000) return r;
+  console.log("invented numbers:", JSON.stringify(unsupported(r.data, master)).slice(0, 300));
+  try {
+    const r2 = await gemini(c, "refine", refinePrompt(c), refineInput(domain, [], 0, r.data, master), schema(c.onepager_schema), 110 - (Date.now() - t0) / 1000);
+    if (unsupported(r2.data, master).length < unsupported(r.data, master).length) return r2;
+  } catch (e) { console.warn("invented-number fix failed", e); }
+  return r;
+}
 
 // Same shape and length, unreadable: shown blurred behind the pay button.
 const LETTERS = "etaoinshrdlucmfwypbgvk";
@@ -131,7 +163,7 @@ const scramble = (v: any): any =>
   : v;
 const UNLOCKED = new Set(["free", "paid", "draft"]);
 // deno-lint-ignore no-explicit-any
-const view = (row: any, price: number) => {
+const view = (row: any, price: string) => {
   const locked = row.status === "locked";
   return {
     id: row.id, status: row.status, domain: row.domain, role: row.target_role ?? "", rewrites: row.rewrites ?? 0, price,
@@ -153,14 +185,34 @@ Deno.serve(async (req) => {
   const t0 = Date.now();
   try {
     const c = await config();
+    // Quality-test mode: only when the request carries the EVAL_TOKEN secret (absent = disabled). Uses a supplied
+    // Master CV and saves nothing.
+    if (typeof body.eval_token === "string" && body.eval_token.length >= 24 && ["extract", "generate", "refine"].includes(action)) {
+      const { data: tok } = await admin.rpc("get_app_secret", { secret_name: "EVAL_TOKEN" });
+      if (!tok || tok !== body.eval_token) return json({ error: "Please sign in to use OnePager." }, 401);
+      if (action === "extract") {
+        const r = await extractMaster(c, String(body.text ?? "").slice(0, 60000));
+        return json({ master: r.data, model: r.model, ms: Date.now() - t0 });
+      }
+      if (action === "generate") {
+        const domain = String(body.domain ?? "General");
+        const user = `TARGET DOMAIN: ${domain}\n${domain === "General" ? "No specific domain: write a strong general-management one-pager." : `DOMAIN KEYWORDS (use only where truthful):\n${keywordsText(body.keywords)}`}\nMASTER CV JSON:\n${JSON.stringify(body.master)}`;
+        const genSchema = { type: "object", properties: { resume: schema(c.onepager_schema), flags: c.flags_schema }, required: ["resume", "flags"] };
+        const r = await gemini(c, "generate", genPrompt(c), user, genSchema);
+        return json({ resume: r.data.resume, flags: r.data.flags, model: r.model, ms: Date.now() - t0 });
+      }
+      const r = await refineChecked(c, String(body.domain ?? "General"), body.problems, body.freeLines, body.resume, body.master);
+      return json({ resume: r.data, model: r.model, ms: Date.now() - t0 });
+    }
     // Signed-in students only (anonymous key alone is rejected), with a daily cap per student.
     const token = (req.headers.get("Authorization") ?? "").replace(/^Bearer\s+/i, "");
     const { data: who } = await admin.auth.getUser(token);
     if (!who?.user) return json({ error: "Please sign in to use OnePager." }, 401);
     const uid = who.user.id;
     const pay: Cfg = c.payments ?? {};
-    const price = Number(pay.price_inr ?? 49);
-    const paywallOn = pay.enabled !== false;
+    const pm = await payMode(admin, pay);
+    const price = String(pay.price_label ?? "$0.90");
+    const paywallOn = pm.on;
     const rewriteCap = Number(pay.rewrites_per_resume ?? 3);
     if (["extract", "generate", "refine"].includes(action)) {
       const limit = Number(c.limits?.daily_ai_calls ?? 40);
@@ -180,7 +232,7 @@ Deno.serve(async (req) => {
     if (action === "extract") {
       const text = String(body.text ?? "").slice(0, 60000);
       if (text.trim().length < 80) return json({ error: "Could not read enough text from the CV. Try another file or fill the form." }, 422);
-      const r = await gemini(c, "extract", fill(c.prompt_extract, c), `CV TEXT:\n"""\n${text}\n"""`, schema(c.master_schema));
+      const r = await extractMaster(c, text);
       const { error: saveErr } = await admin.from("master_cvs").upsert({ user_id: uid, data: r.data, source: "upload", updated_at: new Date().toISOString() });
       if (saveErr) throw new Error("Could not save your Master CV: " + saveErr.message);
       return json({ master: r.data, model: r.model, ms: Date.now() - t0, usage: r.usage });
@@ -200,7 +252,7 @@ ${body.jd ? `\nJOB DESCRIPTION (tailor to it):\n"""\n${String(body.jd).slice(0, 
 MASTER CV JSON:
 ${JSON.stringify(master)}`;
       const genSchema = { type: "object", properties: { resume: schema(c.onepager_schema), flags: c.flags_schema }, required: ["resume", "flags"] };
-      const r = await gemini(c, "generate", fill((c.prompt_generate_override ?? GENERATE_PROMPT) + (c.prompt_generate_addendum ? "\n" + c.prompt_generate_addendum : ""), c), user, genSchema);
+      const r = await gemini(c, "generate", genPrompt(c), user, genSchema);
       const role = String(body.role ?? "").slice(0, 120) || null;
       let row;
       if (existing) {
@@ -225,13 +277,7 @@ ${JSON.stringify(master)}`;
       if (!UNLOCKED.has(res.status)) return json({ error: "Unlock this one-pager first." }, 402);
       const master = await storedMaster();
       if (!master) return json({ error: "We couldn't find your Master CV." }, 400);
-      const user = `TARGET DOMAIN: ${res.domain}
-FIT REPORT: ${JSON.stringify({ problems: body.problems, freeLines: body.freeLines })}
-CURRENT RESUME JSON:
-${JSON.stringify(body.resume)}
-MASTER CV JSON (source of truth for any added facts):
-${JSON.stringify(master)}`;
-      const r = await gemini(c, "refine", fill((c.prompt_refine_override ?? REFINE_PROMPT) + (c.prompt_refine_addendum ? "\n" + c.prompt_refine_addendum : ""), c), user, schema(c.onepager_schema));
+      const r = await refineChecked(c, String(res.domain), body.problems, body.freeLines, body.resume, master);
       return json({ resume: r.data, model: r.model, ms: Date.now() - t0, usage: r.usage });
     }
     if (action === "open") {
@@ -243,7 +289,7 @@ ${JSON.stringify(master)}`;
       const res = await ownResume(body.id);
       if (!res) return json({ error: "Resume not found." }, 404);
       if (res.status !== "locked") return json({ status: res.status });
-      if (!paywallOn || !pay.product_id) return json({ error: "Payments aren't set up yet. Please try again later." }, 503);
+      if (!paywallOn) return json({ error: "Payments aren't set up yet. Please try again later." }, 503);
       let ret: URL;
       try { ret = new URL(String(body.return_url ?? "")); } catch { return json({ error: "Bad return URL" }, 400); }
       if (!(pay.return_origins ?? []).includes(ret.origin)) return json({ error: "Return URL not allowed: " + ret.origin }, 400);
@@ -251,24 +297,24 @@ ${JSON.stringify(master)}`;
       ret.hash = "";
       const master = await storedMaster();
       const name = String(master?.personal?.name || who.user.email?.split("@")[0] || "Student").slice(0, 80);
-      const session = await dodo(admin, pay.mode ?? "test", "/checkouts", {
+      const session = await dodo(admin, pm.mode, "/checkouts", {
         method: "POST",
         body: JSON.stringify({
-          product_cart: [{ product_id: pay.product_id, quantity: 1 }],
+          product_cart: [{ product_id: pm.productId, quantity: 1 }],
           customer: { email: who.user.email, name },
           return_url: ret.toString(),
           metadata: { resume_id: res.id, user_id: uid },
         }),
       });
       if (!session.checkout_url) throw new Error("Payment provider didn't return a checkout page.");
-      await admin.from("payments").insert({ user_id: uid, resume_id: res.id, mode: pay.mode ?? "test", checkout_session_id: session.session_id ?? null, status: "pending" });
+      await admin.from("payments").insert({ user_id: uid, resume_id: res.id, mode: pm.mode, checkout_session_id: session.session_id ?? null, status: "pending" });
       return json({ checkout_url: session.checkout_url });
     }
     if (action === "confirm") {
       const res = await ownResume(body.id);
       if (!res) return json({ error: "Resume not found." }, 404);
       if (res.status !== "locked") return json({ status: res.status });
-      const mode = pay.mode ?? "test";
+      const mode = pm.mode;
       // Payment ids to check: the one Dodo put on the return URL, plus any from this resume's recent checkouts.
       const ids = new Set<string>();
       if (typeof body.payment_id === "string" && /^[\w-]{4,80}$/.test(body.payment_id)) ids.add(body.payment_id);
@@ -284,7 +330,7 @@ ${JSON.stringify(master)}`;
         let p;
         try { p = await dodo(admin, mode, `/payments/${encodeURIComponent(pid)}`); } catch (e) { console.warn("payment lookup", pid, e); continue; }
         if (p?.metadata?.resume_id !== res.id || p?.metadata?.user_id !== uid) continue; // someone else's payment
-        const out = await recordPayment(admin, p, { mode, productId: pay.product_id || undefined });
+        const out = await recordPayment(admin, p, { mode, productId: pm.productId || undefined });
         if (out.unlocked) { status = "paid"; break; }
         if (["failed", "cancelled"].includes(p.status)) status = p.status === "failed" ? "failed" : "cancelled";
         else if (p.status) status = "processing";

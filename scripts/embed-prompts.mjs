@@ -1,4 +1,4 @@
-// Embeds data/prompts/{generate,refine}.md into the edge function source (as defaults; app_config can override).
+// (Retired) prompts now load from app_config at runtime; kept for reference.
 import fs from 'node:fs';
 const p = 'supabase/functions/ai/index.ts';
 let s = fs.readFileSync(p, 'utf8');

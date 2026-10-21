@@ -80,7 +80,8 @@
         },
         "required": [
           "degree",
-          "institute"
+          "institute",
+          "highlights"
         ]
       }
     },
@@ -171,7 +172,8 @@
           }
         },
         "required": [
-          "title"
+          "title",
+          "description"
         ]
       }
     },
@@ -212,7 +214,9 @@
           }
         },
         "required": [
-          "position"
+          "position",
+          "achievements",
+          "responsibilities"
         ]
       }
     },
@@ -329,7 +333,8 @@
           }
         },
         "required": [
-          "activity"
+          "activity",
+          "achievements"
         ]
       }
     },

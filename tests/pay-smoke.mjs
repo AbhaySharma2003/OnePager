@@ -39,6 +39,7 @@ pg.on('console', (m) => { if (m.type() === 'error') errors.push('console: ' + m.
 await pg.route('https://cdn.jsdelivr.net/npm/@supabase/**', (r) => r.fulfill({ contentType: 'text/javascript', body: fs.readFileSync('tests/stubs/supabase-stub.js', 'utf8') }));
 for (const [u, f] of Object.entries(libs)) await pg.route(u, (r) => r.fulfill({ contentType: 'text/javascript', body: fs.readFileSync(f, 'utf8') }));
 await pg.route('**/config.js', async (r) => r.fulfill({ contentType: 'text/javascript', body: fs.readFileSync('web/config.js', 'utf8').replace('PAYMENTS_LIVE = false', 'PAYMENTS_LIVE = true') }));
+await pg.route('**/functions/v1/status', (r) => r.fulfill({ contentType: 'application/json', body: JSON.stringify({ payments_live: true, price_label: '$0.90' }) }));
 await pg.route('https://fonts.googleapis.com/**', (r) => r.fulfill({ contentType: 'text/css', body: '' }));
 await pg.addInitScript(([f]) => { window.__FIXTURES__ = f; window.__STUB__ = { signedOut: true }; }, [fixtures]);
 const out = 'tests/out/';
@@ -81,6 +82,10 @@ log.offer2 = await pg.locator('#offer').innerText();
 await pg.screenshot({ path: out + 'p-2-start-after-free.png' });
 await pg.click('.domain-chip[data-domain="Product Management"]');
 await pg.setInputFiles('#file-cv', cvFile);
+await pg.waitForSelector('#paynote:not([hidden])', { timeout: 10000 });
+log.paidNotice = await pg.locator('#paynote .dialog').innerText();
+await pg.screenshot({ path: out + 'p-2b-paid-notice.png' });
+await pg.click('#pn-go');
 await pg.waitForSelector('#v-resume:not([hidden])', { timeout: 20000 }); await settle();
 log.second = await pg.evaluate(() => ({
   paywall: !document.querySelector('#paywall').hidden, blurred: getComputedStyle(document.querySelector('.paper-scale')).filter,
