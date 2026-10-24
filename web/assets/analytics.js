@@ -3,7 +3,7 @@
 // Never runs on localhost, so local testing stays out of the data.
 // Students' CV content is hidden from recordings with data-clarity-mask on the app's views.
 (function () {
-  var CLARITY_ID = "";
+  var CLARITY_ID = "z2r3euxkzf";
   if (!CLARITY_ID || /^(localhost|127\.|\[::1\])/.test(location.hostname)) return;
   (function (c, l, a, r, i, t, y) {
     c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments); };
