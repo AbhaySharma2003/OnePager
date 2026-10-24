@@ -5,6 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Build your one-pager · OnePager</title>
 <meta name="description" content="Turn your CV into a one-page resume that follows proven resume rules. Download as PDF or Word.">
+<link rel="canonical" href="https://softlaunch.in/app.html">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="OnePager">
+<meta property="og:url" content="https://softlaunch.in/app.html">
+<meta property="og:title" content="Build your one-pager · OnePager">
+<meta property="og:description" content="Turn your CV into a one-page resume that follows proven resume rules. Download as PDF or Word.">
+<meta property="og:image" content="https://softlaunch.in/assets/paper-resume.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<script src="assets/analytics.js" async></script>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Carlito:ital,wght@0,400;0,700;1,400;1,700&display=swap">
 <link rel="stylesheet" href="assets/ui.css">
@@ -20,7 +30,7 @@
       <li data-step="master"><span class="dot">2</span>Master CV</li>
       <li data-step="resume"><span class="dot">3</span>One-pager</li>
     </ol>
-    <div class="who" id="who"></div>
+    <div class="who" id="who" data-clarity-mask="True"></div>
   </div>
 </header>
 
@@ -33,7 +43,7 @@
       <p class="offer" id="offer" hidden></p>
     </div>
 
-    <div class="resume-list" id="saved" hidden>
+    <div class="resume-list" id="saved" data-clarity-mask="True" hidden>
       <h2 class="h-sm">Pick up where you left off</h2>
       <ul id="saved-list"></ul>
     </div>
@@ -80,7 +90,7 @@
   </section>
 
   <!-- 2. MASTER CV FORM -->
-  <section class="view" id="v-master" hidden>
+  <section class="view" id="v-master" data-clarity-mask="True" hidden>
     <div class="page-head">
       <h1>Your Master CV</h1>
       <p class="lede">Everything you've done, in a clear Master CV structure. Add numbers wherever you can: how many, how much, out of how many. Your one-pager is written only from what's here.</p>
@@ -100,7 +110,7 @@
   </section>
 
   <!-- 3. RESUME -->
-  <section class="view" id="v-resume" hidden>
+  <section class="view" id="v-resume" data-clarity-mask="True" hidden>
     <div class="r-head">
       <div>
         <h1 id="r-title">Your one-pager</h1>

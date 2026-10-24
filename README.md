@@ -60,3 +60,7 @@ Secrets (Gemini key) live only in Supabase Vault, never in this repo.
   resumes, and can't change `status`; only the edge functions can.
 - Before deploying either function, run `node scripts/sync-shared.mjs` (copies `_shared/dodo.ts` next to each function).
 - Test: `node tests/pay-smoke.mjs` (free → locked → fake checkout → unlocked).
+
+## Deploys
+
+The Pages workflow runs `scripts/stamp-version.mjs`, which adds `?v=<commit>` to every local .js/.css link in the published copy, so a deploy never mixes browser-cached old files with new ones.
